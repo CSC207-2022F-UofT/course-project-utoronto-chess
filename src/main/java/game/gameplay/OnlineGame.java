@@ -1,4 +1,6 @@
 package game.gameplay;
 
-public class OnlineGame {
+import game.Game;
+
+public class OnlineGame extends Game {
 }

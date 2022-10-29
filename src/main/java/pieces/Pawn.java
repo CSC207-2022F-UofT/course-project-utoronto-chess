@@ -1,4 +1,8 @@
 package pieces;
 
-public class Pawn {
+public class Pawn extends Piece{
+
+    public void promotion() {
+
+    }
 }

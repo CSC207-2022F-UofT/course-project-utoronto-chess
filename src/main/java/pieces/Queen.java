@@ -1,4 +1,4 @@
 package pieces;
 
-public class Queen {
+public class Queen extends Piece {
 }

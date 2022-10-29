@@ -1,4 +1,7 @@
 package game.gameplay;
 
-public class TwoPlayerGame {
+import game.Game;
+
+public class TwoPlayerGame extends Game {
+
 }

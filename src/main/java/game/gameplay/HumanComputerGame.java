@@ -1,4 +1,6 @@
 package game.gameplay;
 
-public class HumanComputerGame {
+import game.Game;
+
+public class HumanComputerGame extends Game {
 }
