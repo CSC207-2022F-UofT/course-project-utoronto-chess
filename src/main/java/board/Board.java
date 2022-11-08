@@ -1,8 +1,7 @@
 package board;
 
+import game.Game;
 import pieces.*;
-
-import java.util.Arrays;
 
 public class Board {
 
@@ -13,51 +12,103 @@ public class Board {
     }
 
 
-    public void movePiece() {
+    public boolean movePiece(int[] start, int[] end) {
+        Piece piece = board[start[0]][start[1]];
 
+        // No piece at this position
+        if (piece == null) {
+            System.out.println("No piece at start position");
+            return false;
+        }
+
+        // Not a playable piece
+        else if (piece.isWhite() != Game.isWhiteTurn()) {
+            System.out.println("Not your turn");
+            return false;
+        }
+
+        // Not legal move
+        else if (!piece.canMove(board, start, end)) {
+            System.out.println("Illegal move");
+            return false;
+        }
+
+        // Capture
+        else if (board[end[0]][end[1]] != null) {
+            System.out.println("Piece captured: " + board[end[0]][end[1]].toString());
+        }
+
+        // Auto Queen promotion for pawn
+        else if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
+            board[end[0]][end[1]] = new Queen(piece.isWhite(), end[1], end[0]);
+            return true;
+        }
+
+        // Castle
+        else if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
+            int rookX = end[1] == 2 ? 0 : 7;
+            int rookY = end[0];
+            int rookNewX = end[1] == 2 ? 3 : 5;
+            int rookNewY = end[0];
+            board[rookNewY][rookNewX] = board[rookY][rookX];
+            board[rookY][rookX] = null;
+        }
+
+        board[end[0]][end[1]] = piece;
+        board[start[0]][start[1]] = null;
+
+        piece.setPosition(end);
+        return true;
     }
 
 
     public void getAllValidMoves() {
+        // TODO
+    }
 
+    public Piece[][] getBoard() {
+        return board;
     }
 
     /*
     *   Creates a new board with all the chess pieces in their starting positions
      */
     public void createNewBoard() {
+
         this.board = new Piece[8][8];
-        // White pieces
-        this.board[0][0] = new Rook(true, 0, 0);
-        this.board[0][1] = new Knight(true, 0, 1);
-        this.board[0][2] = new Bishop(true, 0, 2);
-        this.board[0][3] = new Queen(true, 0, 3);
-        this.board[0][4] = new King(true, 0, 4);
-        this.board[0][5] = new Bishop(true, 0, 5);
-        this.board[0][6] = new Knight(true, 0, 6);
-        this.board[0][7] = new Rook(true, 0, 7);
+        // Black pieces
+        this.board[0][0] = new Rook(false, 0, 0);
+        this.board[0][1] = new Knight(false, 0, 1);
+        this.board[0][2] = new Bishop(false, 0, 2);
+        this.board[0][3] = new Queen(false, 0, 3);
+        this.board[0][4] = new King(false, 0, 4);
+        this.board[0][5] = new Bishop(false, 0, 5);
+        this.board[0][6] = new Knight(false, 0, 6);
+        this.board[0][7] = new Rook(false, 0, 7);
 
         for (int i = 0; i < 8; i++) {
-            this.board[1][i] = new Pawn(true, 1, i);
+            this.board[1][i] = new Pawn(false, 1, i);
         }
 
-        // Black pieces
-        this.board[7][0] = new Rook(false, 7, 0);
-        this.board[7][1] = new Knight(false, 7, 1);
-        this.board[7][2] = new Bishop(false, 7, 2);
-        this.board[7][3] = new Queen(false, 7, 3);
-        this.board[7][4] = new King(false, 7, 4);
-        this.board[7][5] = new Bishop(false, 7, 5);
-        this.board[7][6] = new Knight(false, 7, 6);
-        this.board[7][7] = new Rook(false, 7, 7);
+        // White pieces
+        this.board[7][0] = new Rook(true, 7, 0);
+        this.board[7][1] = new Knight(true, 7, 1);
+        this.board[7][2] = new Bishop(true, 7, 2);
+        this.board[7][3] = new Queen(true, 7, 3);
+        this.board[7][4] = new King(true, 7, 4);
+        this.board[7][5] = new Bishop(true, 7, 5);
+        this.board[7][6] = new Knight(true, 7, 6);
+        this.board[7][7] = new Rook(true, 7, 7);
 
         for (int i = 0; i < 8; i++) {
-            this.board[6][i] = new Pawn(false, 6, i);
+            this.board[6][i] = new Pawn(true, 6, i);
         }
 
     }
 
-
+    /*
+    *   Prints the current board to the console
+     */
     public String toString() {
         StringBuilder brdStr = new StringBuilder();
         brdStr.append("  a b c d e f g h\n");
@@ -65,7 +116,7 @@ public class Board {
             brdStr.append(8 - r).append(" ");
             for (int c = 0; c < 8; c++) {
                 if (this.board[r][c] == null) {
-                    brdStr.append(" ");
+                    brdStr.append(".");
                 } else {
                     brdStr.append(this.board[r][c].toString());
                 }
@@ -75,11 +126,6 @@ public class Board {
         }
         brdStr.append("  a b c d e f g h\n");
         return brdStr.toString();
-    }
-
-    public static void main(String[] args) {
-        Board board = new Board();
-        System.out.println(board);
     }
 
 }

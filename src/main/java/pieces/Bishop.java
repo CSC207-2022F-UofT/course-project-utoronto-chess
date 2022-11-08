@@ -7,7 +7,17 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public boolean canMove(Piece[][] board, int[] start, int[] end) {
+        return false;
+    }
+
+
+    @Override
     public String toString() {
-        return "B";
+        if (white) {
+            return "B";
+        } else {
+            return "b";
+        }
     }
 }

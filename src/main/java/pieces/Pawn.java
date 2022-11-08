@@ -12,7 +12,16 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public boolean canMove(Piece[][] board, int[] start, int[] end) {
+        return false;
+    }
+
+    @Override
     public String toString() {
-        return "P";
+        if (white) {
+            return "P";
+        } else {
+            return "p";
+        }
     }
 }

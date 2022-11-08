@@ -7,7 +7,16 @@ public class Queen extends Piece {
     }
 
     @Override
+    public boolean canMove(Piece[][] board, int[] start, int[] end) {
+        return false;
+    }
+
+    @Override
     public String toString() {
-        return "Q";
+        if (white) {
+            return "Q";
+        } else {
+            return "q";
+        }
     }
 }
