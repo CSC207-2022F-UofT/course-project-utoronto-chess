@@ -14,9 +14,9 @@ public class Queen extends Piece {
     @Override
     public String toString() {
         if (white) {
-            return "Q";
+            return WHITE_COLOR + "Q" + RESET_COLOR;
         } else {
-            return "q";
+            return BLACK_COLOR + "q" + RESET_COLOR;
         }
     }
 }
