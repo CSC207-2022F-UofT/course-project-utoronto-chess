@@ -58,7 +58,10 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
         Graphics2D g2d = (Graphics2D) g;
         g.drawRect(50,50,400,400);
         g.setColor(Color.RED);
-
+        g.drawRect(500 ,300, 50, 50); // button for login
+        g.drawRect(600, 50, 200, 70); // button 1
+        g.drawRect(600, 150, 200, 70); // button 2
+        g.drawRect(600, 250, 200, 70); // button 3
         for(int i  = 0; i < 8; i++){
             for(int j = 0; j < 8; j++) {
                 ((Graphics2D) g).draw(grid[i][j]);
@@ -95,6 +98,13 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
                 }
             }
         }
+        Point p  = MouseInfo.getPointerInfo().getLocation();
+        int x = p.x;
+        int y = p.y;
+        if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
+            LoginWindow newwindow = new LoginWindow();// opens login window when clicked
+        }
+
     }
 
     @Override
