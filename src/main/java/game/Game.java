@@ -2,7 +2,8 @@ package game;
 
 public class Game {
 
-    private Game gameType;
+    private static boolean whiteTurn;
+
 
     public boolean isOver() {
         return false;
@@ -12,7 +13,8 @@ public class Game {
 
     }
 
-    public void getGameType() {
+    public static boolean isWhiteTurn() {
+        return whiteTurn;
     }
 
 
