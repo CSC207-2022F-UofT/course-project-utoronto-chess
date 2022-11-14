@@ -20,9 +20,9 @@ public class King extends Piece {
     @Override
     public String toString() {
         if (white) {
-            return "K";
+            return WHITE_COLOR + "K" + RESET_COLOR;
         } else {
-            return "k";
+            return BLACK_COLOR + "k" + RESET_COLOR;
         }
     }
 }
