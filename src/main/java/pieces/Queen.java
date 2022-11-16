@@ -74,7 +74,7 @@ public class Queen extends Piece {
 
     @Override
     public String toString() {
-        if (white) {
+        if (isWhite()) {
             return "Q";
         } else {
             return "q";
