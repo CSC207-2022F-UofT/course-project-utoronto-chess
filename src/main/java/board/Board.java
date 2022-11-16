@@ -6,6 +6,8 @@ import pieces.*;
 public class Board {
 
     Piece[][] board;
+    private static final String BOARD_BACKGROUND = "\u001B[40m";
+    private static final String RESET_COLOR = "\u001B[0m";
 
     public Board() {
         this.createNewBoard();
@@ -71,7 +73,7 @@ public class Board {
     }
 
     /*
-    *   Creates a new board with all the chess pieces in their starting positions
+     *   Creates a new board with all the chess pieces in their starting positions
      */
     public void createNewBoard() {
 
@@ -107,24 +109,27 @@ public class Board {
     }
 
     /*
-    *   Prints the current board to the console
+     *   Prints the current board to the console
      */
     public String toString() {
         StringBuilder brdStr = new StringBuilder();
-        brdStr.append("  a b c d e f g h\n");
+        brdStr.append("\u001B[40m    a   b   c   d   e   f   g   h    \u001B[0m\n");
         for (int r = 0; r < 8; r++) {
-            brdStr.append(8 - r).append(" ");
+            brdStr.append(BOARD_BACKGROUND + "  +---+---+---+---+---+---+---+---+  " + RESET_COLOR + "\n");
+            brdStr.append(BOARD_BACKGROUND).append(8 - r).append(" | ");
             for (int c = 0; c < 8; c++) {
                 if (this.board[r][c] == null) {
                     brdStr.append(".");
                 } else {
-                    brdStr.append(this.board[r][c].toString());
+                    brdStr.append(this.board[r][c].toString()).append(BOARD_BACKGROUND);
                 }
-                brdStr.append(" ");
+                brdStr.append(" | ");
             }
-            brdStr.append(8 - r).append("\n");
+            brdStr.append(8 - r).append(RESET_COLOR).append("\n");
         }
-        brdStr.append("  a b c d e f g h\n");
+        brdStr.append(BOARD_BACKGROUND + "  +---+---+---+---+---+---+---+---+  " + RESET_COLOR + "\n");
+        brdStr.append(BOARD_BACKGROUND + "    a   b   c   d   e   f   g   h    " + RESET_COLOR + "\n");
+
         return brdStr.toString();
     }
 

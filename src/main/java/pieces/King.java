@@ -14,15 +14,20 @@ public class King extends Piece {
 
     @Override
     public boolean canMove(Piece[][] board, int[] start, int[] end) {
-        return false;
+        int x = end[0] - start[0];
+        int y = end[1] - start[1];
+        if (Math.abs(x) > 1  || Math.abs(y) > 1) {
+            return false;
+        }
+        return board[end[0]][end[1]] == null || board[end[0]][end[1]].isWhite() != this.isWhite();
     }
 
     @Override
     public String toString() {
         if (white) {
-            return "K";
+            return WHITE_COLOR + "K" + RESET_COLOR;
         } else {
-            return "k";
+            return BLACK_COLOR + "k" + RESET_COLOR;
         }
     }
 }

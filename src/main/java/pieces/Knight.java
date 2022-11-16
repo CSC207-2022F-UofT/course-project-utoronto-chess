@@ -8,16 +8,21 @@ public class Knight extends Piece {
 
     @Override
     public boolean canMove(Piece[][] board, int[] start, int[] end) {
-        return false;
+        int x = end[0] - start[0];
+        int y = end[1] - start[1];
+        if (Math.abs(x) == 2 && Math.abs(y) == 1) {
+            return true;
+        }
+        return Math.abs(x) == 1 && Math.abs(y) == 2;
     }
 
 
     @Override
     public String toString() {
         if (white) {
-            return "N";
+            return WHITE_COLOR + "N" + RESET_COLOR;
         } else {
-            return "n";
+            return BLACK_COLOR + "n" + RESET_COLOR;
         }
     }
 }
