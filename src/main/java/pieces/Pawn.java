@@ -15,7 +15,7 @@ public class Pawn extends Piece{
     public boolean canMove(Piece[][] board, int[] start, int[] end) {
         int x = end[0] - start[0];
         int y = end[1] - start[1];
-        if (this.isWhite()) {
+        if (!this.isWhite()) {
             if (x == 1 && y == 0 && board[end[0]][end[1]] == null) {
                 return true;
             }
