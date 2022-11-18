@@ -1,5 +1,5 @@
 package menu;
-import user.loginregistration.User;
+import user.entities.User;
 
 public class Menu {
 

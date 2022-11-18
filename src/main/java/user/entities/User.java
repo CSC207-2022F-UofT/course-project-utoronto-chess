@@ -1,4 +1,4 @@
-package user.loginregistration;
+package user.entities;
 
 // Entity Layer
 public class User {
