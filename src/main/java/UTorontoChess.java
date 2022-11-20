@@ -1,5 +1,7 @@
 import board.Board;
 
+import java.io.PrintWriter;
+
 public class UTorontoChess {
 
     public static void main(String[] args) {
