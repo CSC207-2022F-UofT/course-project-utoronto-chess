@@ -17,13 +17,12 @@ import java.awt.MouseInfo;
 public class Anim extends JFrame {
 
     public Anim() {
-        super("Anim");//shows title in the frame
+        super("Utoronto Chess");//shows title in the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//closes on exit
 
         AnimPanel game = new AnimPanel();//creates a new panel in the frame
         add(game);//adds panel to the frame
         pack();
-//        setResizable(false);
         setVisible(true);
     }
 
@@ -32,7 +31,7 @@ public class Anim extends JFrame {
     }
 }
 
-class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseListener {
+class AnimPanel extends JPanel implements ActionListener, MouseListener {
     private boolean[] keys;
     Rectangle[][] grid = new Rectangle[8][8]; // Code should come from somewhere
     int dx = 900;
@@ -40,7 +39,6 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
     public AnimPanel() {
         keys = new boolean[KeyEvent.KEY_LAST + 1];
         setPreferredSize(new Dimension(dx, dy));
-        addKeyListener(this); //key inputs
         addMouseListener(this); // mouse inputs
 
         /// THIS CODE SHOULD COME FROM SOMEWHERE ELSE
@@ -59,8 +57,8 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
         g.drawRect(50,50,400,400);
         g.setColor(Color.RED);
         g.drawRect(500 ,300, 50, 50); // button for login
-        g.drawRect(600, 50, 200, 70); // button 1
-        g.drawRect(600, 150, 200, 70); // button 2
+        //g.drawRect(600, 50, 200, 70); // button 1
+        //g.drawRect(600, 150, 200, 70); // button 2
         g.drawRect(600, 250, 200, 70); // button 3
         for(int i  = 0; i < 8; i++){
             for(int j = 0; j < 8; j++) {
@@ -74,20 +72,6 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
 
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -103,6 +87,8 @@ class AnimPanel extends JPanel implements KeyListener, ActionListener, MouseList
         int y = p.y;
         if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
             LoginWindow newwindow = new LoginWindow();// opens login window when clicked
+        } else if (600 < x && x < 810 && 280 < y && y < 350) {
+            System.out.println("This is working");
         }
 
     }
