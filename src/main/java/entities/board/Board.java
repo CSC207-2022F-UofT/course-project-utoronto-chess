@@ -1,7 +1,7 @@
-package board;
+package entities.board;
 
-import game.Game;
-import pieces.*;
+import entities.pieces.*;
+import useCases.Game;
 
 public class Board {
 
@@ -37,7 +37,12 @@ public class Board {
 
         // Capture
         else if (board[end[0]][end[1]] != null) {
-            System.out.println("Piece captured: " + board[end[0]][end[1]].toString());
+            if (board[end[0]][end[1]].isWhite() == piece.isWhite()) {
+                System.out.println("Illegal move");
+                return false;
+            } else {
+                System.out.println("Piece captured: " + board[end[0]][end[1]].toString());
+            }
         }
 
         // Auto Queen promotion for pawn

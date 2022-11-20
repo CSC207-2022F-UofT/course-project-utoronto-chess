@@ -1,4 +1,4 @@
-package pieces;
+package entities.pieces;
 
 public class Pawn extends Piece{
 
