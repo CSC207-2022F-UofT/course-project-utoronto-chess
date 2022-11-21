@@ -1,8 +1,10 @@
+import useCases.Game;
 import views.ChessPanel;
 
 public class UTorontoChess {
 
     public static void main(String[] arguments) {
-        ChessPanel chessPanel = new ChessPanel();
+        Game game = new Game();
+        ChessPanel chessPanel = new ChessPanel(game);
     }
 }

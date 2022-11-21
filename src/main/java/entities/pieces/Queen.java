@@ -80,4 +80,13 @@ public class Queen extends Piece {
             return BLACK_COLOR + "q" + RESET_COLOR;
         }
     }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wQueen";
+        } else {
+            return "bQueen";
+        }
+    }
 }

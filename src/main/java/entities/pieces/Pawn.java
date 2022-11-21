@@ -43,4 +43,13 @@ public class Pawn extends Piece{
             return BLACK_COLOR + "p" + RESET_COLOR;
         }
     }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wPawn";
+        } else {
+            return "bPawn";
+        }
+    }
 }

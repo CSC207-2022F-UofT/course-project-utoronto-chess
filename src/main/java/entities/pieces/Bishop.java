@@ -44,13 +44,21 @@ public class Bishop extends Piece {
         return true;
     }
 
-
     @Override
     public String toString() {
         if (white) {
             return WHITE_COLOR + "B" + RESET_COLOR;
         } else {
             return BLACK_COLOR + "b" + RESET_COLOR;
+        }
+    }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wBishop";
+        } else {
+            return "bBishop";
         }
     }
 }

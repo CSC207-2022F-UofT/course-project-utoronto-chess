@@ -52,4 +52,13 @@ public class Rook extends Piece {
             return BLACK_COLOR + "r" + RESET_COLOR;
         }
     }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wRook";
+        } else {
+            return "bRook";
+        }
+    }
 }

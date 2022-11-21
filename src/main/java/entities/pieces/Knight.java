@@ -16,13 +16,21 @@ public class Knight extends Piece {
         return Math.abs(x) == 1 && Math.abs(y) == 2;
     }
 
-
     @Override
     public String toString() {
         if (white) {
             return WHITE_COLOR + "N" + RESET_COLOR;
         } else {
             return BLACK_COLOR + "n" + RESET_COLOR;
+        }
+    }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wKnight";
+        } else {
+            return "bKnight";
         }
     }
 }

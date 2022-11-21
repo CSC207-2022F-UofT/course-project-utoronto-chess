@@ -30,4 +30,13 @@ public class King extends Piece {
             return BLACK_COLOR + "k" + RESET_COLOR;
         }
     }
+
+    @Override
+    public String stringPath() {
+        if (white) {
+            return "wKing";
+        } else {
+            return "bKing";
+        }
+    }
 }

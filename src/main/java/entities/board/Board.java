@@ -3,6 +3,8 @@ package entities.board;
 import entities.pieces.*;
 import useCases.Game;
 
+import java.util.Arrays;
+
 public class Board {
 
     Piece[][] board;
@@ -14,11 +16,20 @@ public class Board {
     }
 
 
+    /*
+        * Moves a piece from one position to another
+        * Called from the Game class
+     */
     public boolean movePiece(int[] start, int[] end) {
         Piece piece = board[start[0]][start[1]];
 
+        if (Arrays.equals(start, end)) {
+            System.out.println("Same position");
+            return false;
+        }
+
         // No piece at this position
-        if (piece == null) {
+        else if (piece == null) {
             System.out.println("No piece at start position");
             return false;
         }
@@ -26,12 +37,6 @@ public class Board {
         // Not a playable piece
         else if (piece.isWhite() != Game.isWhiteTurn()) {
             System.out.println("Not your turn");
-            return false;
-        }
-
-        // Not legal move
-        else if (!piece.canMove(board, start, end)) {
-            System.out.println("Illegal move");
             return false;
         }
 
@@ -59,6 +64,12 @@ public class Board {
             int rookNewY = end[0];
             board[rookNewY][rookNewX] = board[rookY][rookX];
             board[rookY][rookX] = null;
+        }
+
+        // Not legal move
+        else if (!piece.canMove(board, start, end)) {
+            System.out.println("Illegal move");
+            return false;
         }
 
         board[end[0]][end[1]] = piece;
@@ -138,4 +149,9 @@ public class Board {
         return brdStr.toString();
     }
 
+    // Create a method to see if there is a piece that can move to the location of the opponent's king
+    public boolean isCheckmate() {
+        // TODO
+        return false;
+    }
 }

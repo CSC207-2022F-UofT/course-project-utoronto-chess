@@ -1,20 +1,25 @@
 package views;
 
-import entities.board.Board;
+import controller.ChessBoardController;
 import entities.pieces.*;
+import useCases.Game;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ChessPanel extends JFrame{
 
-    public ChessPanel() {
+    public ChessPanel(Game game) {
         super("UTorontoChess");//shows title in the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//closes on exit
 
-        ChessPanelContent game = new ChessPanelContent();//creates a new panel in the frame
-        add(game);//adds panel to the frame
+        ChessPanelContent panel = new ChessPanelContent(game);//creates a new panel in the frame
+        add(panel);//adds panel to the frame
         pack();
         // setResizable(false);
         setVisible(true);
@@ -25,33 +30,38 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     private final boolean[] keys;
     private final Timer myTimer;
 
-    Board board;
     Rectangle[][] grid;
     String moveMode;
 
-    int[] start;
-    int[] end;
+    int[] start = new int[2];
+    int[] end = new int[2];
+
+    Game game;
+
+    ChessBoardController controller = new ChessBoardController();
 
 //    private Image background;
 
-    public ChessPanelContent() {
+    public ChessPanelContent(Game game) {
+
+        // Assign class variables
+        this.game = game;
+        moveMode = "select";
+
+
         keys = new boolean[KeyEvent.KEY_LAST + 1];
-        myTimer = new Timer(50, this);
+        myTimer = new Timer(1000, this);
 //        Font fnt = new Font("Comic Sans", Font.BOLD, 30);
 
-        //boundries
+        // Size of Panel
         int dx = 900;
-        //dimensions of game
         int dy = 500;
+
         setPreferredSize(new Dimension(dx, dy));
         addKeyListener(this); //key inputs
         addMouseListener(this); // mouse inputs
 
-        moveMode = "select";
-        start = new int[2];
-        end = new int[2];
-
-        board = new Board();
+        // Create grid for chess board
         grid = new Rectangle[8][8];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -80,7 +90,11 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     @Override
     public void paint(Graphics g) {
         boardDrawing(g);
-        pieceDrawing(g);
+        try {
+            pieceDrawing(g);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void boardDrawing(Graphics g){
@@ -91,62 +105,14 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         }
     }
 
-    private void pieceDrawing(Graphics g){
-        Piece[][] pieces = board.getBoard();
+    private void pieceDrawing(Graphics g) throws IOException {
+        Piece[][] board = controller.getBoard(game);
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                typeDrawing(g, pieces, i, j);
-            }
-        }
-    }
-
-    private void typeDrawing(Graphics g, Piece[][] pieces, int i, int j){
-        if(pieces[i][j] instanceof Pawn){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("P", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("p", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-        }
-        if(pieces[i][j] instanceof Rook){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("R", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("r", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-        }
-        if(pieces[i][j] instanceof Knight){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("N", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("n", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-        }
-        if(pieces[i][j] instanceof Bishop){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("B", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("b", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-        }
-        if(pieces[i][j] instanceof Queen){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("Q", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("q", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-        }
-        if(pieces[i][j] instanceof King){
-            if(pieces[i][j].isWhite()) {
-                g.drawString("K", grid[i][j].x + 25, grid[i][j].y + 25);
-            }
-            else{
-                g.drawString("k", grid[i][j].x + 25, grid[i][j].y + 25);
+                if (board[i][j] != null) {
+                    BufferedImage img = ImageIO.read(new File("src/main/assets/"+ board[i][j].stringPath() + ".png"));
+                    g.drawImage(img, grid[i][j].x, grid[i][j].y, 50, 50, null);
+                }
             }
         }
     }
@@ -164,8 +130,8 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
                 else if(grid[i][j].contains(e.getPoint()) && moveMode.equals("move")){
                     end[0] = i;
                     end[1] = j;
-                    board.movePiece(start, end);
-                    System.out.println(board.getBoard()[start[0]][start[1]]instanceof Pawn);
+                    controller.movePiece(game, start, end);
+                    // TODO REFRESH JFRAME OR JPANEL HERE INSTEAD OF A TIMER
                     moveMode = "select";
                 }
             }

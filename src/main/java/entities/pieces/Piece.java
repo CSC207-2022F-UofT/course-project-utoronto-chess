@@ -33,4 +33,6 @@ public abstract class Piece {
     }
 
     public abstract boolean canMove(Piece[][] board, int[] start, int[] end);
+
+    public abstract String stringPath();
 }
