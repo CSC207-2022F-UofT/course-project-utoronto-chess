@@ -1,8 +1,8 @@
-package user.usecases;
+package useCases.database;
 
 // use case layer
 
-import user.entities.User;
+import entities.user.User;
 
 public class UserInteractor {
     private boolean checkValidUsername(String username) {

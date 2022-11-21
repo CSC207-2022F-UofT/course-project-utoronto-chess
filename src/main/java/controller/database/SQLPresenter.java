@@ -1,7 +1,7 @@
-package user.adapters;
+package controller.database;
 
-import user.usecases.SQLGateway;
-import user.entities.User;
+import useCases.database.SQLGateway;
+import entities.user.User;
 
 import java.sql.*;
 

@@ -1,8 +1,8 @@
-package controller;
+package controller.game;
 
 
 import entities.pieces.Piece;
-import useCases.Game;
+import useCases.game.Game;
 
 // Controller classes that handles user input from ChessPanel and makes the appropriate calls to the board class
 public class ChessBoardController {

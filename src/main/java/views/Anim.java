@@ -1,17 +1,10 @@
-package presenter;
+package views;
 
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Random;
-import java.util.Scanner;
 
 import javax.swing.*;
-import java.awt.MouseInfo;
 import java.awt.MouseInfo;
 
 public class Anim extends JFrame {
@@ -86,7 +79,7 @@ class AnimPanel extends JPanel implements ActionListener, MouseListener {
         int x = p.x;
         int y = p.y;
         if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
-            LoginWindow newwindow = new LoginWindow();// opens login window when clicked
+            presenter.LoginWindow newwindow = new presenter.LoginWindow();// opens login window when clicked
         } else if (600 < x && x < 810 && 280 < y && y < 350) {
             System.out.println("This is working");
         }

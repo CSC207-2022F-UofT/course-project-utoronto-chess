@@ -1,4 +1,4 @@
-package user.entities;
+package entities.user;
 
 // Entity Layer
 public class User {

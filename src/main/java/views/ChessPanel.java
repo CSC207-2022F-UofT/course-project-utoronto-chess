@@ -1,8 +1,8 @@
 package views;
 
-import controller.ChessBoardController;
+import controller.game.ChessBoardController;
 import entities.pieces.*;
-import useCases.Game;
+import useCases.game.Game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package views;
 
-import user.User;
+import entities.user.User;
 
 public class Menu {
 

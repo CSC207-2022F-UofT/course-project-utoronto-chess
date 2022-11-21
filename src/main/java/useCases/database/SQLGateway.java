@@ -1,5 +1,5 @@
-package user.usecases;
-import user.entities.User;
+package useCases.database;
+import entities.user.User;
 
 import java.sql.SQLException;
 

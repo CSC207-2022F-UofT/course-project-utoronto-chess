@@ -1,6 +1,5 @@
-package useCases;
+package useCases.game;
 
-import controller.ChessBoardController;
 import entities.board.Board;
 import entities.pieces.Piece;
 

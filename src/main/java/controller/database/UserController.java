@@ -1,6 +1,6 @@
-package user.adapters;
-import user.entities.User;
-import user.usecases.UserInteractor;
+package controller.database;
+import entities.user.User;
+import useCases.database.UserInteractor;
 import java.sql.SQLException;
 
 public class UserController {

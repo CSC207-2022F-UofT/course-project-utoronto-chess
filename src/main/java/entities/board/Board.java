@@ -1,7 +1,7 @@
 package entities.board;
 
 import entities.pieces.*;
-import useCases.Game;
+import useCases.game.Game;
 
 import java.util.Arrays;
 
