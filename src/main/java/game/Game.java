@@ -39,6 +39,7 @@ public class Game {
     }
 
     public void Turn(){
+
         whiteTurn = !whiteTurn;
     }
 

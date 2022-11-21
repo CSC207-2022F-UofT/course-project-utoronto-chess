@@ -7,8 +7,11 @@ public class Pawn extends Piece{
         super(white,column, row);
     }
 
-    public void promotion() {
-
+    public boolean promotion() {
+        if (this.isWhite()){
+            return this.row == 0;
+        }
+        return this.row == 7;
     }
 
     @Override
