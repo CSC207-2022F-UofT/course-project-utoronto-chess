@@ -1,10 +1,9 @@
 package menu;
-
-import user.User;
+import user.entities.User;
 
 public class Menu {
 
     public User getSignedInUser() {
-        return new User();
+        return new User("username", "password");
     }
 }
