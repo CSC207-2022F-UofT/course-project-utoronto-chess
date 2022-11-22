@@ -89,6 +89,7 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     //used to draw all aspects of the game
     @Override
     public void paint(Graphics g) {
+        paintComponent(g);
         boardDrawing(g);
         try {
             pieceDrawing(g);
@@ -122,17 +123,19 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     public void mouseClicked(MouseEvent e) {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if(grid[i][j].contains(e.getPoint()) && moveMode.equals("select")){
+                if(grid[i][j].contains(e.getX(), e.getY()) && moveMode.equals("select")){
                     start[0] = i;
                     start[1] = j;
                     moveMode = "move";
                 }
-                else if(grid[i][j].contains(e.getPoint()) && moveMode.equals("move")){
+                else if(grid[i][j].contains(e.getX(), e.getY()) && moveMode.equals("move")){
                     end[0] = i;
                     end[1] = j;
                     controller.movePiece(game, start, end);
-                    // TODO REFRESH JFRAME OR JPANEL HERE INSTEAD OF A TIMER
+                    repaint();
                     moveMode = "select";
+                    start = new int[2];
+                    end = new int[2];
                 }
             }
         }
@@ -173,7 +176,6 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        repaint();
     }
 
 }
