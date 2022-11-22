@@ -35,10 +35,10 @@ public class Board {
         }
 
         // Not a playable piece
-        else if (piece.isWhite() != Game.isWhiteTurn()) {
-            System.out.println("Not your turn");
-            return false;
-        }
+//        else if (piece.isWhite() != Game.isWhiteTurn()) {
+//            System.out.println("Not your turn");
+//            return false;
+//        }
 
         // Capture
         else if (board[end[0]][end[1]] != null) {

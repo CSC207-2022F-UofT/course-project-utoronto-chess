@@ -53,7 +53,7 @@ public class Game {
     }
 
     public Piece[][] getBoard() {
-        System.out.println(board);
+        //System.out.println(board);
         return board.getBoard();
     }
 
