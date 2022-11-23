@@ -40,6 +40,12 @@ public class Board {
 //            return false;
 //        }
 
+        // Not legal move
+        else if (!piece.canMove(board, start, end)) {
+            System.out.println("Illegal move");
+            return false;
+        }
+
         // Capture
         else if (board[end[0]][end[1]] != null) {
             if (board[end[0]][end[1]].isWhite() == piece.isWhite()) {
@@ -64,12 +70,6 @@ public class Board {
             int rookNewY = end[0];
             board[rookNewY][rookNewX] = board[rookY][rookX];
             board[rookY][rookX] = null;
-        }
-
-        // Not legal move
-        else if (!piece.canMove(board, start, end)) {
-            System.out.println("Illegal move");
-            return false;
         }
 
         board[end[0]][end[1]] = piece;
