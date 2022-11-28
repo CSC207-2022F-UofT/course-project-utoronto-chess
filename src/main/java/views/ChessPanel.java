@@ -33,10 +33,12 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     Rectangle[][] grid;
     String moveMode;
 
-    int[] start = new int[2];
-    int[] end = new int[2];
+    int[] start;
+    int[] end;
 
     Game game;
+
+    Rectangle selectRect;
 
     ChessBoardController controller = new ChessBoardController();
 
@@ -48,6 +50,10 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         this.game = game;
         moveMode = "select";
 
+        start = new int[2];
+        end = new int[2];
+
+        selectRect = new Rectangle();
 
         keys = new boolean[KeyEvent.KEY_LAST + 1];
         myTimer = new Timer(1000, this);
@@ -89,7 +95,11 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     //used to draw all aspects of the game
     @Override
     public void paint(Graphics g) {
+        g.setColor(Color.BLACK);
+        paintComponent(g);
         boardDrawing(g);
+        g.setColor(Color.red);
+        selectDrawing(g);
         try {
             pieceDrawing(g);
         } catch (IOException e) {
@@ -102,6 +112,12 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
             for(Rectangle rect : rect_list){
                 g.drawRect(rect.x, rect.y, rect.width, rect.height);
             }
+        }
+    }
+
+    private void selectDrawing(Graphics g){
+        if (moveMode.equals("move")){
+            g.drawRect(selectRect.x, selectRect.y, selectRect.width, selectRect.height);
         }
     }
 
@@ -122,17 +138,21 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
     public void mouseClicked(MouseEvent e) {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if(grid[i][j].contains(e.getPoint()) && moveMode.equals("select")){
+                if(grid[i][j].contains(e.getX(), e.getY()) && moveMode.equals("select")){
                     start[0] = i;
                     start[1] = j;
+                    selectRect = grid[i][j];
                     moveMode = "move";
+                    repaint();
                 }
-                else if(grid[i][j].contains(e.getPoint()) && moveMode.equals("move")){
+                else if(grid[i][j].contains(e.getX(), e.getY()) && moveMode.equals("move")){
                     end[0] = i;
                     end[1] = j;
                     controller.movePiece(game, start, end);
-                    // TODO REFRESH JFRAME OR JPANEL HERE INSTEAD OF A TIMER
+                    repaint();
                     moveMode = "select";
+                    start = new int[2];
+                    end = new int[2];
                 }
             }
         }
@@ -173,7 +193,6 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        repaint();
     }
 
 }

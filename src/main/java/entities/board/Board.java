@@ -35,8 +35,14 @@ public class Board {
         }
 
         // Not a playable piece
-        else if (piece.isWhite() != Game.isWhiteTurn()) {
-            System.out.println("Not your turn");
+//        else if (piece.isWhite() != Game.isWhiteTurn()) {
+//            System.out.println("Not your turn");
+//            return false;
+//        }
+
+        // Not legal move
+        else if (!piece.canMove(board, start, end)) {
+            System.out.println("Illegal move");
             return false;
         }
 
@@ -64,12 +70,6 @@ public class Board {
             int rookNewY = end[0];
             board[rookNewY][rookNewX] = board[rookY][rookX];
             board[rookY][rookX] = null;
-        }
-
-        // Not legal move
-        else if (!piece.canMove(board, start, end)) {
-            System.out.println("Illegal move");
-            return false;
         }
 
         board[end[0]][end[1]] = piece;
