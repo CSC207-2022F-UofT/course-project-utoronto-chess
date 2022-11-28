@@ -1,6 +1,8 @@
 package useCases.game;
 
+import controller.game.ChessBoardController;
 import entities.board.Board;
+import entities.pieces.King;
 import entities.pieces.Piece;
 
 public class Game {
@@ -13,7 +15,21 @@ public class Game {
 
 
     public boolean isOver() {
-        return isOver;
+        boolean white_alive = false;
+        boolean black_alive = false;
+        for (int i = 0; i <= 7; i++){
+            for (int j = 0; j <= 7; j++){
+                if (this.board.getBoard()[i][j] instanceof King){
+                    if (this.board.getBoard()[i][j].isWhite()){
+                        white_alive = true;
+                    }
+                    if (!this.board.getBoard()[i][j].isWhite()){
+                        black_alive = true;
+                    }
+                }
+            }
+        }
+        return (white_alive && black_alive);
     }
 
     public Game() {
@@ -49,7 +65,15 @@ public class Game {
     }
 
     public boolean movePiece(int[] start, int[] end) {
-        return board.movePiece(start, end);
+        if(isOver){
+            System.out.println("Game over");
+            return false;
+        }
+        if (board.movePiece(start, end)) {
+            whiteTurn = !whiteTurn;
+            return true;
+        }
+        return false;
     }
 
     public Piece[][] getBoard() {
