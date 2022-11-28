@@ -2,8 +2,8 @@ package entities.pieces;
 
 public class Knight extends Piece {
 
-    public Knight(boolean white, int column, int row) {
-        super(white,column, row);
+    public Knight(boolean white) {
+        super(white);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package entities.board;
+package useCases.board;
 
 import entities.pieces.*;
 import useCases.game.Game;
@@ -15,6 +15,45 @@ public class Board {
         this.createNewBoard();
     }
 
+    public Piece[][] getBoard() {
+        return board;
+    }
+
+    /*
+     *   Creates a new board with all the chess pieces in their starting positions
+     */
+    public void createNewBoard() {
+
+        this.board = new Piece[8][8];
+        // Black pieces
+        this.board[0][0] = new Rook(false);
+        this.board[0][1] = new Knight(false);
+        this.board[0][2] = new Bishop(false);
+        this.board[0][3] = new Queen(false);
+        this.board[0][4] = new King(false);
+        this.board[0][5] = new Bishop(false);
+        this.board[0][6] = new Knight(false);
+        this.board[0][7] = new Rook(false);
+
+        for (int i = 0; i < 8; i++) {
+            this.board[1][i] = new Pawn(false);
+        }
+
+        // White pieces
+        this.board[7][0] = new Rook(true);
+        this.board[7][1] = new Knight(true);
+        this.board[7][2] = new Bishop(true);
+        this.board[7][3] = new Queen(true);
+        this.board[7][4] = new King(true);
+        this.board[7][5] = new Bishop(true);
+        this.board[7][6] = new Knight(true);
+        this.board[7][7] = new Rook(true);
+
+        for (int i = 0; i < 8; i++) {
+            this.board[6][i] = new Pawn(true);
+        }
+
+    }
 
     /*
         * Moves a piece from one position to another
@@ -23,6 +62,10 @@ public class Board {
     public boolean movePiece(int[] start, int[] end) {
         Piece piece = board[start[0]][start[1]];
 
+
+        // Handle all cases where a piece cannot be moved
+
+        // Same location
         if (Arrays.equals(start, end)) {
             System.out.println("Same position");
             return false;
@@ -35,10 +78,10 @@ public class Board {
         }
 
         // Not a playable piece
-//        else if (piece.isWhite() != Game.isWhiteTurn()) {
-//            System.out.println("Not your turn");
-//            return false;
-//        }
+        else if (piece.isWhite() != Game.isWhiteTurn()) {
+            System.out.println("Not your turn");
+            return false;
+        }
 
         // Not legal move
         else if (!piece.canMove(board, start, end)) {
@@ -46,24 +89,16 @@ public class Board {
             return false;
         }
 
-        // Capture
-        else if (board[end[0]][end[1]] != null) {
-            if (board[end[0]][end[1]].isWhite() == piece.isWhite()) {
-                System.out.println("Illegal move");
-                return false;
-            } else {
-                System.out.println("Piece captured: " + board[end[0]][end[1]].toString());
-            }
+        // Same color piece
+        else if (board[end[0]][end[1]] != null && board[end[0]][end[1]].isWhite() == piece.isWhite()) {
+            System.out.println("Same color piece");
+            return false;
         }
 
-        // Auto Queen promotion for pawn
-        else if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
-            board[end[0]][end[1]] = new Queen(piece.isWhite(), end[1], end[0]);
-            return true;
-        }
+        // Handle special cases where a piece can be moved
 
-        // Castle
-        else if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
+        // Castling
+        if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
             int rookX = end[1] == 2 ? 0 : 7;
             int rookY = end[0];
             int rookNewX = end[1] == 2 ? 3 : 5;
@@ -72,10 +107,14 @@ public class Board {
             board[rookY][rookX] = null;
         }
 
+        // Auto Queen promotion for pawn
+        if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
+           piece = new Queen(piece.isWhite());
+        }
+
         board[end[0]][end[1]] = piece;
         board[start[0]][start[1]] = null;
 
-        piece.setPosition(end);
         return true;
     }
 
@@ -84,45 +123,23 @@ public class Board {
         // TODO
     }
 
-    public Piece[][] getBoard() {
-        return board;
+    /*
+     *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
+     */
+    public boolean check() {
+        // TODO
+        return false;
     }
 
     /*
-     *   Creates a new board with all the chess pieces in their starting positions
+     *   Checks if the king of the given color is in checkmate
      */
-    public void createNewBoard() {
-
-        this.board = new Piece[8][8];
-        // Black pieces
-        this.board[0][0] = new Rook(false, 0, 0);
-        this.board[0][1] = new Knight(false, 0, 1);
-        this.board[0][2] = new Bishop(false, 0, 2);
-        this.board[0][3] = new Queen(false, 0, 3);
-        this.board[0][4] = new King(false, 0, 4);
-        this.board[0][5] = new Bishop(false, 0, 5);
-        this.board[0][6] = new Knight(false, 0, 6);
-        this.board[0][7] = new Rook(false, 0, 7);
-
-        for (int i = 0; i < 8; i++) {
-            this.board[1][i] = new Pawn(false, 1, i);
-        }
-
-        // White pieces
-        this.board[7][0] = new Rook(true, 7, 0);
-        this.board[7][1] = new Knight(true, 7, 1);
-        this.board[7][2] = new Bishop(true, 7, 2);
-        this.board[7][3] = new Queen(true, 7, 3);
-        this.board[7][4] = new King(true, 7, 4);
-        this.board[7][5] = new Bishop(true, 7, 5);
-        this.board[7][6] = new Knight(true, 7, 6);
-        this.board[7][7] = new Rook(true, 7, 7);
-
-        for (int i = 0; i < 8; i++) {
-            this.board[6][i] = new Pawn(true, 6, i);
-        }
-
+    public boolean checkmate() {
+        // TODO
+        return false;
     }
+
+
 
     /*
      *   Prints the current board to the console
@@ -147,11 +164,5 @@ public class Board {
         brdStr.append(BOARD_BACKGROUND + "    a   b   c   d   e   f   g   h    " + RESET_COLOR + "\n");
 
         return brdStr.toString();
-    }
-
-    // Create a method to see if there is a piece that can move to the location of the opponent's king
-    public boolean isCheckmate() {
-        // TODO
-        return false;
     }
 }
