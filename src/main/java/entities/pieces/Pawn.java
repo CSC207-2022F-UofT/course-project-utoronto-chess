@@ -3,8 +3,8 @@ package entities.pieces;
 public class Pawn extends Piece{
 
 
-    public Pawn(boolean white, int column, int row) {
-        super(white,column, row);
+    public Pawn(boolean white) {
+        super(white);
     }
 
     public boolean promotion() {
