@@ -65,7 +65,7 @@ public class Game {
     }
 
     public boolean movePiece(int[] start, int[] end) {
-        if(isOver){
+        if(isOver()){
             System.out.println("Game over");
             return false;
         }
