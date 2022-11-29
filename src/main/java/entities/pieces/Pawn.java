@@ -7,12 +7,6 @@ public class Pawn extends Piece{
         super(white);
     }
 
-    public boolean promotion() {
-        if (this.isWhite()){
-            return this.row == 0;
-        }
-        return this.row == 7;
-    }
 
     @Override
     public boolean canMove(Piece[][] board, int[] start, int[] end) {
