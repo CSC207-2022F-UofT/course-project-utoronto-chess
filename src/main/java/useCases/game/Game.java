@@ -1,39 +1,50 @@
 package useCases.game;
 
 import entities.pieces.King;
-import useCases.board.Board;
 import entities.pieces.Piece;
+import useCases.board.Board;
+
+import javax.swing.*;
 
 public class Game {
 
     private static boolean whiteTurn;
 
-    private boolean isOver;
-
     private final Board board = new Board();
 
 
     public boolean isOver() {
-        boolean white_alive = false;
-        boolean black_alive = false;
-        for (int i = 0; i <= 7; i++){
-            for (int j = 0; j <= 7; j++){
-                if (this.board.getBoard()[i][j] instanceof King){
-                    if (this.board.getBoard()[i][j].isWhite()){
-                        white_alive = true;
-                    }
-                    if (!this.board.getBoard()[i][j].isWhite()){
-                        black_alive = true;
+        return (black_win() && white_win());
+    }
+
+    private boolean black_win(){
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                if (this.board.getBoard()[i][j] instanceof King) {
+                    if (this.board.getBoard()[i][j].isWhite()) {
+                        return false;
                     }
                 }
             }
         }
-        return (white_alive && black_alive);
+        return true;
+    }
+
+    private boolean white_win(){
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                if (this.board.getBoard()[i][j] instanceof King) {
+                    if (!this.board.getBoard()[i][j].isWhite()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public Game() {
         whiteTurn = true;
-        isOver = false;
     }
 
 
@@ -41,9 +52,17 @@ public class Game {
         * Moves a piece from one position to another
      */
     public void movePiece(int[] start, int[] end) {
-        boolean success = board.movePiece(start, end);
-        if (success) {
-            whiteTurn = !whiteTurn;
+        if(!isOver()) {
+            boolean success = board.movePiece(start, end);
+            if (success) {
+                whiteTurn = !whiteTurn;
+            }
+        }
+        if (white_win()){
+            JOptionPane.showMessageDialog(null, "Game Over. White Wins");
+        }
+        if (black_win()){
+            JOptionPane.showMessageDialog(null, "Game Over. Black Wins");
         }
     }
 
