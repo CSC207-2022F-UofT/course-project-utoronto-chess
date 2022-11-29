@@ -34,7 +34,7 @@ public class Game {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 if (this.board.getBoard()[i][j] instanceof King) {
-                    if (!this.board.getBoard()[i][j].isWhite()) {
+                    if (! this.board.getBoard()[i][j].isWhite()) {
                         return false;
                     }
                 }
