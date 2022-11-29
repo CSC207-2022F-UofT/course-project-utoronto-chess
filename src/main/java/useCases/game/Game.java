@@ -14,7 +14,7 @@ public class Game {
 
 
     public boolean isOver() {
-        return (black_win() && white_win());
+        return (black_win() | white_win());
     }
 
     private boolean black_win(){
@@ -61,7 +61,7 @@ public class Game {
         if (white_win()){
             JOptionPane.showMessageDialog(null, "Game Over. White Wins");
         }
-        if (black_win()){
+        else if (black_win()){
             JOptionPane.showMessageDialog(null, "Game Over. Black Wins");
         }
     }
