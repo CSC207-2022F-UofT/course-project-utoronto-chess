@@ -107,7 +107,7 @@ class UserControllerTest {
     void testLogout() {
         userController.register("adminuser", "Testpass123!");
         userController.login("adminuser", "Testpass123!");
-        assertEquals("adminuser", userController.getCurrentUser().username());
+        assertEquals("adminuser", userController.getCurrentUser().getUsername());
         userController.logout();
         assertNull(userController.getCurrentUser());
     }
@@ -126,7 +126,7 @@ class UserControllerTest {
     void testEverything() {
         userController.register("adminuser", "Testpass123!");
         userController.login("adminuser", "Testpass123!");
-        assertEquals("adminuser", userController.getCurrentUser().username());
+        assertEquals("adminuser", userController.getCurrentUser().getUsername());
         assertEquals(1000, userController.getELO("adminuser"));
         userController.updateELO("adminuser", 1200);
         assertEquals(1200, userController.getELO("adminuser"));

@@ -18,7 +18,7 @@ public class UserController {
         User user = userInteractor.newUserRequest(username, password);
         if (user != null) {
             try {
-                if (!sqlPresenter.lookupUsername(user.username())) {
+                if (!sqlPresenter.lookupUsername(user.getUsername())) {
                     sqlPresenter.addUser(user);
                     return true;
                 }

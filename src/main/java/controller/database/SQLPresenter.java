@@ -33,8 +33,8 @@ public class SQLPresenter implements SQLGateway {
     public void addUser(User user) throws SQLException {
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
-            ps.setString(1, user.username());
-            ps.setString(2, user.password());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not add user to database");
@@ -72,8 +72,8 @@ public class SQLPresenter implements SQLGateway {
     public boolean checkCredentials(User user) throws SQLException {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
-            ps.setString(1, user.username());
-            ps.setString(2, user.password());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
             ResultSet rs = ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {

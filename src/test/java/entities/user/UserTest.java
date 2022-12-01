@@ -11,13 +11,13 @@ class UserTest {
     @DisplayName("User constructor should allow invalid and valid usernames.")
     void testUsername() {
         User user = new User("username" , "password");
-        assertEquals("username", user.username());
+        assertEquals("username", user.getUsername());
     }
 
     @Test
     @DisplayName("User constructor should allow invalid and valid passwords.")
     void testPassword() {
         User user = new User("username" , "password");
-        assertEquals("password", user.password());
+        assertEquals("password", user.getPassword());
     }
 }

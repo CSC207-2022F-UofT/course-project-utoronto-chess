@@ -1,13 +1,23 @@
 package entities.user;
 
 // Entity Layer
-public record User(String username, String password) {
-    /**
-     * @param username the username of the user
-     * @param password the password of the user
-     */
-    public User {
+public class User {
+    private final String username;
+    private final String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
 }
+
 
