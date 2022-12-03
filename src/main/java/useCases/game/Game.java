@@ -1,6 +1,5 @@
 package useCases.game;
 
-import entities.pieces.King;
 import entities.pieces.Piece;
 import useCases.board.Board;
 
@@ -12,31 +11,50 @@ public class Game {
 
     private final Board board = new Board();
 
-
-    public boolean isOver() {
-        return (black_win() | white_win());
+    public boolean Over() {
+        return white_checkmate() | black_checkmate();
     }
 
-    private boolean black_win(){
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 7; j++) {
-                if ( this.board.getBoard()[i][j] instanceof King) {
-                    if (this.board.getBoard()[i][j].isWhite()) {
-                        return false;
-                    }
+    public boolean white_checkmate() {
+        if (!isWhiteTurn()){
+            whiteTurn = !whiteTurn;
+            for (Board board : board.getAllValidMoves_white()){
+                if (!board.check(true)){
+                    whiteTurn = !whiteTurn;
+                    return false;
+                }
+            }
+            whiteTurn = !whiteTurn;
+            return true;
+        }
+        else {
+            for (Board board : board.getAllValidMoves_white()){
+                if (!board.check(true)){
+                    return false;
                 }
             }
         }
         return true;
     }
 
-    private boolean white_win(){
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 7; j++) {
-                if (this.board.getBoard()[i][j] instanceof King) {
-                    if (! this.board.getBoard()[i][j].isWhite()) {
-                        return false;
-                    }
+
+
+    public boolean black_checkmate() {
+        if (isWhiteTurn()){
+            whiteTurn = ! whiteTurn;
+            for (Board board : board.getAllValidMoves_black()){
+                if (!board.check(false)){
+                    whiteTurn = !whiteTurn;
+                    return false;
+                }
+            }
+            whiteTurn = !whiteTurn;
+            return true;
+        }
+        else {
+            for (Board board : board.getAllValidMoves_black()){
+                if (!board.check(false)){
+                    return false;
                 }
             }
         }
@@ -52,16 +70,22 @@ public class Game {
         * Moves a piece from one position to another
      */
     public void movePiece(int[] start, int[] end) {
-        if(!isOver()) {
-            boolean success = board.movePiece(start, end);
+        if(!Over()) {
+            Board board1 = board.copy();
+            boolean success = board1.movePiece(start, end);
+            if (board1.check(whiteTurn)){
+                System.out.println("Checked");
+                success = false;
+            }
             if (success) {
+                board.movePiece(start, end);
                 whiteTurn = !whiteTurn;
             }
         }
-        if (white_win()){
+        if (black_checkmate()){
             JOptionPane.showMessageDialog(null, "Game Over. White Wins");
         }
-        else if (black_win()){
+        else if (white_checkmate()){
             JOptionPane.showMessageDialog(null, "Game Over. Black Wins");
         }
     }
