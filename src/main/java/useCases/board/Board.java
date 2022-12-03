@@ -3,6 +3,7 @@ package useCases.board;
 import entities.pieces.*;
 import useCases.game.Game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
@@ -98,6 +99,42 @@ public class Board {
         // Handle special cases where a piece can be moved
 
         // Castling
+        return Castling(start, end, piece);
+    }
+
+    /*
+     *  Move Piece without printing anything, used for find all valid moves.
+     */
+    private boolean move_Piece(int[] start, int[] end) {
+        Piece piece = board[start[0]][start[1]];
+
+
+        if (Arrays.equals(start, end)) {
+            return false;
+        }
+
+        // No piece at this position
+        else if (piece == null) {
+            return false;
+        }
+
+        // Not a playable piece
+        else if (piece.isWhite() != Game.isWhiteTurn()) {
+            return false;
+        }
+
+        else if (!piece.canMove(board, start, end)) {
+            return false;
+        }
+
+        else if (board[end[0]][end[1]] != null && board[end[0]][end[1]].isWhite() == piece.isWhite()) {
+            return false;
+        }
+
+        return Castling(start, end, piece);
+    }
+
+    private boolean Castling(int[] start, int[] end, Piece piece) {
         if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
             int rookX = end[1] == 2 ? 0 : 7;
             int rookY = end[0];
@@ -107,9 +144,8 @@ public class Board {
             board[rookY][rookX] = null;
         }
 
-        // Auto Queen promotion for pawn
         if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
-           piece = new Queen(piece.isWhite());
+            piece = new Queen(piece.isWhite());
         }
 
         board[end[0]][end[1]] = piece;
@@ -119,26 +155,107 @@ public class Board {
     }
 
 
-    public void getAllValidMoves() {
-        // TODO
+    /*
+     *  Gives a list of Boards after one move of white piece
+     */
+    public ArrayList<Board> getAllValidMoves_white() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (board[i][j] != null && board[i][j].isWhite()){
+                        go_over_all_cells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    /*
+     *  Gives a list of Boards after one move of black piece
+     */
+    public ArrayList<Board> getAllValidMoves_black() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (!Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (board[i][j] != null && !board[i][j].isWhite()){
+                        go_over_all_cells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    private void go_over_all_cells(ArrayList<Board> result, int i, int j) {
+        for (int k = 0; k <= 7; k++) {
+            for (int l = 0; l <= 7; l++) {
+                Board board1 = this.copy();
+                if(board1.move_Piece(new int[]{i, j}, new int[]{k, l})){
+                    result.add(board1);}
+                }
+            }
+    }
+
+    public Board copy(){
+        Board board1 = new Board();
+        for (int i = 0; i <= 7; i++) {
+            System.arraycopy(board[i], 0, board1.board[i], 0, 8);
+        }
+        return board1;
+    }
+
+    /*
+     *  Gives the coordinate of king of the given colour
+     */
+    private int[] find_king(boolean is_white){
+        if (is_white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (board[i][j] instanceof King && board[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (board[i][j] instanceof King && !board[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        return new int[] {-99, -99};
     }
 
     /*
      *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
      */
-    public boolean check() {
-        // TODO
+    public boolean check(boolean white) {
+        if (white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = board[i][j];
+                    if(piece!= null && !piece.isWhite() && piece.canMove(board, new int[]{i, j}, new int[]{find_king(true)[0], find_king(true)[1]})){
+                    return true;
+                    }
+                }
+            }
+        }
+        if (!white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = board[i][j];
+                    if(piece!= null && piece.isWhite() && piece.canMove(board, new int[]{i, j}, new int[]{find_king(false)[0], find_king(false)[1]})){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
-
-    /*
-     *   Checks if the king of the given color is in checkmate
-     */
-    public boolean checkmate() {
-        // TODO
-        return false;
-    }
-
 
 
     /*
