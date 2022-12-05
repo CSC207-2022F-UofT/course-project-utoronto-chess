@@ -7,16 +7,23 @@ import java.util.Arrays;
 
 public class Board {
 
-    Piece[][] board;
+    Piece[][] chessBoard;
     private static final String BOARD_BACKGROUND = "\u001B[40m";
     private static final String RESET_COLOR = "\u001B[0m";
 
+    /*
+     * Create a new board object and initialize the chess board with the correct pieces in the
+     * correct positions
+     */
     public Board() {
         this.createNewBoard();
     }
 
-    public Piece[][] getBoard() {
-        return board;
+    /*
+     * Getter for the chess board
+     */
+    public Piece[][] getChessBoard() {
+        return chessBoard;
     }
 
     /*
@@ -24,33 +31,33 @@ public class Board {
      */
     public void createNewBoard() {
 
-        this.board = new Piece[8][8];
+        this.chessBoard = new Piece[8][8];
         // Black pieces
-        this.board[0][0] = new Rook(false);
-        this.board[0][1] = new Knight(false);
-        this.board[0][2] = new Bishop(false);
-        this.board[0][3] = new Queen(false);
-        this.board[0][4] = new King(false);
-        this.board[0][5] = new Bishop(false);
-        this.board[0][6] = new Knight(false);
-        this.board[0][7] = new Rook(false);
+        this.chessBoard[0][0] = new Rook(false);
+        this.chessBoard[0][1] = new Knight(false);
+        this.chessBoard[0][2] = new Bishop(false);
+        this.chessBoard[0][3] = new Queen(false);
+        this.chessBoard[0][4] = new King(false);
+        this.chessBoard[0][5] = new Bishop(false);
+        this.chessBoard[0][6] = new Knight(false);
+        this.chessBoard[0][7] = new Rook(false);
 
         for (int i = 0; i < 8; i++) {
-            this.board[1][i] = new Pawn(false);
+            this.chessBoard[1][i] = new Pawn(false);
         }
 
         // White pieces
-        this.board[7][0] = new Rook(true);
-        this.board[7][1] = new Knight(true);
-        this.board[7][2] = new Bishop(true);
-        this.board[7][3] = new Queen(true);
-        this.board[7][4] = new King(true);
-        this.board[7][5] = new Bishop(true);
-        this.board[7][6] = new Knight(true);
-        this.board[7][7] = new Rook(true);
+        this.chessBoard[7][0] = new Rook(true);
+        this.chessBoard[7][1] = new Knight(true);
+        this.chessBoard[7][2] = new Bishop(true);
+        this.chessBoard[7][3] = new Queen(true);
+        this.chessBoard[7][4] = new King(true);
+        this.chessBoard[7][5] = new Bishop(true);
+        this.chessBoard[7][6] = new Knight(true);
+        this.chessBoard[7][7] = new Rook(true);
 
         for (int i = 0; i < 8; i++) {
-            this.board[6][i] = new Pawn(true);
+            this.chessBoard[6][i] = new Pawn(true);
         }
 
     }
@@ -58,9 +65,13 @@ public class Board {
     /*
         * Moves a piece from one position to another
         * Called from the Game class
+        * Returns true if the move was successful
+        * Returns false if the move was unsuccessful
+        @param start: the starting position of the piece
+        @param end: the ending position of the piece
      */
     public boolean movePiece(int[] start, int[] end) {
-        Piece piece = board[start[0]][start[1]];
+        Piece piece = chessBoard[start[0]][start[1]];
 
 
         // Handle all cases where a piece cannot be moved
@@ -84,13 +95,13 @@ public class Board {
         }
 
         // Not legal move
-        else if (!piece.canMove(board, start, end)) {
+        else if (!piece.canMove(chessBoard, start, end)) {
             System.out.println("Illegal move");
             return false;
         }
 
         // Same color piece
-        else if (board[end[0]][end[1]] != null && board[end[0]][end[1]].isWhite() == piece.isWhite()) {
+        else if (chessBoard[end[0]][end[1]] != null && chessBoard[end[0]][end[1]].isWhite() == piece.isWhite()) {
             System.out.println("Same color piece");
             return false;
         }
@@ -99,12 +110,7 @@ public class Board {
 
         // Castling
         if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
-            int rookX = end[1] == 2 ? 0 : 7;
-            int rookY = end[0];
-            int rookNewX = end[1] == 2 ? 3 : 5;
-            int rookNewY = end[0];
-            board[rookNewY][rookNewX] = board[rookY][rookX];
-            board[rookY][rookX] = null;
+            this.castling(end);
         }
 
         // Auto Queen promotion for pawn
@@ -112,16 +118,21 @@ public class Board {
            piece = new Queen(piece.isWhite());
         }
 
-        board[end[0]][end[1]] = piece;
-        board[start[0]][start[1]] = null;
+        chessBoard[end[0]][end[1]] = piece;
+        chessBoard[start[0]][start[1]] = null;
 
         return true;
     }
 
-
-    public void getAllValidMoves() {
-        // TODO
+    private void castling(int[] end) {
+        int rookX = end[1] == 2 ? 0 : 7;
+        int rookY = end[0];
+        int rookNewX = end[1] == 2 ? 3 : 5;
+        int rookNewY = end[0];
+        chessBoard[rookNewY][rookNewX] = chessBoard[rookY][rookX];
+        chessBoard[rookY][rookX] = null;
     }
+
 
     /*
      *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
@@ -151,10 +162,10 @@ public class Board {
             brdStr.append(BOARD_BACKGROUND + "  +---+---+---+---+---+---+---+---+  " + RESET_COLOR + "\n");
             brdStr.append(BOARD_BACKGROUND).append(8 - r).append(" | ");
             for (int c = 0; c < 8; c++) {
-                if (this.board[r][c] == null) {
+                if (this.chessBoard[r][c] == null) {
                     brdStr.append(".");
                 } else {
-                    brdStr.append(this.board[r][c].toString()).append(BOARD_BACKGROUND);
+                    brdStr.append(this.chessBoard[r][c].toString()).append(BOARD_BACKGROUND);
                 }
                 brdStr.append(" | ");
             }
