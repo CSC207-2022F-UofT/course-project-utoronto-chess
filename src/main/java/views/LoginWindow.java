@@ -22,7 +22,9 @@ public class LoginWindow {
         JLabel password = new JLabel("Password");
         JButton sign_in = new JButton("Sign in");
         JButton register = new JButton("Register");
-        JLabel success = new JLabel("must contain one letter and number each");
+        JLabel success = new JLabel("<html>username must only contain alphanumeric <br/>characters, underscores, hyphens, and periods <br/> Password must have one letter, number, capital letter, and symbol. <br/> " +
+                "Successful passwords include: Aiden123!<html>");
+
 
         UserInteractor u1 = new UserInteractor();
 
@@ -32,7 +34,7 @@ public class LoginWindow {
         passwordtext.setBounds(100, 50, 165, 25);
         sign_in.setBounds(10, 80, 90, 25);
         register.setBounds(110, 80, 90, 25);
-        success.setBounds(10, 105, 300, 25); // informs user if login was successful
+        success.setBounds(10, 135, 250, 150); // informs user if login was successful
 
         // sets the fonts for buttons
         username.setFont(new Font(null, Font.PLAIN, 12));
