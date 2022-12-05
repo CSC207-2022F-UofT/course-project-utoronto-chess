@@ -2,6 +2,7 @@ package useCases.board;
 
 import entities.pieces.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class BoardTests {
@@ -10,6 +11,7 @@ class BoardTests {
 
     // Test that the board is created with the correct pieces in the correct positions
     @Test
+    @DisplayName("New Board")
     void testCreateNewBoard() {
         Piece[][] board = this.board.getChessBoard();
         Assertions.assertEquals(board[0][0].getClass(), Rook.class);
@@ -38,6 +40,7 @@ class BoardTests {
 
     // Test that a piece cannot be moved to the same position
     @Test
+    @DisplayName("Same Position")
     void testMovePieceSamePosition() {
         int[] start = {6, 0};
         int[] end = {6, 0};
@@ -46,44 +49,49 @@ class BoardTests {
 
     // Test that a piece is not at the starting position
     @Test
+    @DisplayName("No Piece at Start")
     void testMovePieceNoPiece() {
-        int[] start = {3, 0};
-        int[] end = {1, 0};
+        int[] start = {4, 0};
+        int[] end = {5, 0};
         Assertions.assertFalse(this.board.movePiece(start, end));
     }
 
     // Test that a piece cannot be moved to a position that is not on the board
     @Test
+    @DisplayName("Out of Bounds")
     void testMovePieceOutOfBounds() {
-        int[] start = {1, 0};
+        int[] start = {6, 0};
         int[] end = {8, 0};
         Assertions.assertFalse(this.board.movePiece(start, end));
     }
 
     // Test that a piece cannot be moved to a position that is occupied by a piece of the same color
     @Test
+    @DisplayName("Same Color")
     void testMovePieceSameColor() {
-        int[] start = {1, 0};
-        int[] end = {2, 0};
+        int[] start = {6, 0};
+        int[] end = {5, 0};
         this.board.movePiece(start, end);
-        start = new int[]{6, 0};
-        end = new int[]{5, 0};
-        this.board.movePiece(start, end);
-        start = new int[]{0, 0};
+        start = new int[]{1, 0};
         end = new int[]{2, 0};
+        this.board.movePiece(start, end);
+        start = new int[]{7, 0};
+        end = new int[]{5, 0};
         Assertions.assertFalse(this.board.movePiece(start, end));
     }
 
     // Test that a piece cannot be moved to a position that is not a valid move for that piece
     @Test
+    @DisplayName("Invalid Move")
     void testMovePieceInvalidMove() {
-        int[] start = {1, 0};
-        int[] end = {4, 0};
+        int[] start = {5, 0};
+        int[] end = {2, 0};
         Assertions.assertFalse(this.board.movePiece(start, end));
     }
 
     // Test that a piece can be moved from one position to another
     @Test
+    @DisplayName("Valid Move")
     void testMovePiece() {
         int[] start = {6, 0};
         int[] end = {5, 0};
