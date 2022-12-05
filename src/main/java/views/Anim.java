@@ -1,11 +1,14 @@
 package views;
 
 
+import useCases.game.Game;
+
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 import java.awt.MouseInfo;
+import java.sql.SQLOutput;
 
 public class Anim extends JFrame {
 
@@ -41,6 +44,7 @@ class AnimPanel extends JPanel implements ActionListener, MouseListener {
                 grid[i][j] = new Rectangle(50 + 50 * i, 50 + 50 * j, 50, 50);
             }
         }
+
         ///
 
     }
@@ -48,19 +52,20 @@ class AnimPanel extends JPanel implements ActionListener, MouseListener {
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g.drawRect(50,50,400,400);
-        g.setColor(Color.RED);
+        //g.drawRect(50,50,400,400);
+        g.drawString("requires log in", 600, 335);
+        g.drawString("Login", 510, 330);
+        g.setFont(new Font("Serif", Font.ITALIC, 36));
+        g.drawString("Play", 660, 300);
+        g.drawString("Chess Game", 100, 100);
+        g.setColor(Color.BLACK);
         g.drawRect(500 ,300, 50, 50); // button for login
         g.drawRect(600, 250, 200, 70); // button 3
-        for(int i  = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++) {
-                ((Graphics2D) g).draw(grid[i][j]);
-            }
-        }
-        g.drawString("requires log in", 600, 335);
         if(login_success[0]){
-            //g.drawString(username, 400, 400); //displays username in corner once logged in
-            //g.clearRect(600, 335, 200, 10); // cleans the requires log in message
+           // g.drawString(username, 500, 300); //displays username in corner once logged in
+            //g.clearRect(600, 335, 200, 10); // cleans the 'requires' log in
+            System.out.println("changes user name");
+            //repaint();
         }
     }
 
@@ -83,12 +88,14 @@ class AnimPanel extends JPanel implements ActionListener, MouseListener {
         int x = p.x;
         int y = p.y;
         if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
-            views.LoginWindow newwindow = new views.LoginWindow();// opens login window when clicked
+            LoginWindow newwindow = new LoginWindow();// opens login window when clicked
             AnimPanel.this.login_success = newwindow.isLogin_success();
+            System.out.println("this is the login button");
         } else if (600 < x && x < 810 && 280 < y && y < 350){
             if(AnimPanel.this.login_success[0]){
                 System.out.println("This is working");
-                //TODO: closes this window and opens chess game
+                Game game = new Game();
+                ChessPanel chessPanel = new ChessPanel(game);
             }
             System.out.println("Log In first");
 

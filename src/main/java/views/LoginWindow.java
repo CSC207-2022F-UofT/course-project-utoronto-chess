@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 public class LoginWindow {
     private boolean[] ar = new boolean[1];
+    private String user;
     public LoginWindow() {
         JPasswordField passwordtext = new JPasswordField();
         JTextField usertext = new JTextField(20);
@@ -44,12 +45,13 @@ public class LoginWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign in was clicked");
-                if (checker.login(usertext.getText(), Arrays.toString(passwordtext.getPassword()))){
+                System.out.println(usertext.getText() + " " + String.valueOf(passwordtext.getPassword()));
+                if (checker.login(usertext.getText(), String.valueOf(passwordtext.getPassword()))){
                     success.setText("Signed in"); //checks user info by calling usercontroller
                     ar[0] = true;
+                    user = usertext.getText();
                 }
                 else{
-                    ar[0] = true; // TODO
                     success.setText("Sign in unsuccessful");
                 }
                 // check username and password here
@@ -59,11 +61,12 @@ public class LoginWindow {
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(checker.register(usertext.getText(), Arrays.toString(passwordtext.getPassword()))) {
+                System.out.println(usertext.getText() + " " + String.valueOf(passwordtext.getPassword()));
+                if(checker.register(usertext.getText(), String.valueOf(passwordtext.getPassword()))) {
                     success.setText("Registered"); //checks register info using usercontroller
                     ar[0] = true;
+                    user = usertext.getText();
                 }else {
-                    ar[0] = true; // TODO
                     success.setText("Register unsuccessful");
                 }
             }
@@ -85,4 +88,5 @@ public class LoginWindow {
     public boolean[] isLogin_success(){
         return ar;
     }
+    public String get_username(){return this.user;}
 }
