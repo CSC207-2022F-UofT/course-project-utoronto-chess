@@ -5,7 +5,7 @@ import entities.pieces.Piece;
 
 public class Game {
 
-    private static boolean whiteTurn;
+    private static boolean whiteTurn = true;
 
     private boolean isOver;
 
@@ -17,7 +17,6 @@ public class Game {
     }
 
     public Game() {
-        whiteTurn = true;
         isOver = false;
     }
 
@@ -33,7 +32,7 @@ public class Game {
     }
 
     public Piece[][] getBoard() {
-        return board.getBoard();
+        return board.getChessBoard();
     }
 
     public static boolean isWhiteTurn() {
