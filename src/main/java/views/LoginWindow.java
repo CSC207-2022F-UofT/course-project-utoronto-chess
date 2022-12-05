@@ -1,12 +1,18 @@
-package presenter;
+package views;
+
+import controller.database.UserController;
+import useCases.database.UserInteractor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LoginWindow {
-    private boolean login_success;
+    private boolean[] ar = new boolean[1];
     public LoginWindow() {
         JPasswordField passwordtext = new JPasswordField();
         JTextField usertext = new JTextField(20);
@@ -15,7 +21,9 @@ public class LoginWindow {
         JLabel password = new JLabel("Password");
         JButton sign_in = new JButton("Sign in");
         JButton register = new JButton("Register");
-        JLabel success = new JLabel();
+        JLabel success = new JLabel("must contain one letter and number each");
+
+        UserInteractor u1 = new UserInteractor();
 
         username.setBounds(10, 20 , 80, 25);
         usertext.setBounds(100, 20, 165, 25);
@@ -29,18 +37,35 @@ public class LoginWindow {
         username.setFont(new Font(null, Font.PLAIN, 12));
         password.setFont(new Font(null, Font.PLAIN, 12));
 
+
+        UserController checker = new UserController();
         // Action when user clicks sign in button
         sign_in.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign in was clicked");
+                if (checker.login(usertext.getText(), Arrays.toString(passwordtext.getPassword()))){
+                    success.setText("Signed in"); //checks user info by calling usercontroller
+                    ar[0] = true;
+                }
+                else{
+                    ar[0] = true; // TODO
+                    success.setText("Sign in unsuccessful");
+                }
+                // check username and password here
             }
         });
         // Action when user clicks register button
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Register was clicked");
+                if(checker.register(usertext.getText(), Arrays.toString(passwordtext.getPassword()))) {
+                    success.setText("Registered"); //checks register info using usercontroller
+                    ar[0] = true;
+                }else {
+                    ar[0] = true; // TODO
+                    success.setText("Register unsuccessful");
+                }
             }
         });
 
@@ -50,14 +75,14 @@ public class LoginWindow {
         frame.add(passwordtext);
         frame.add(sign_in);
         frame.add(register);
-
+        frame.add(success);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.setSize(300, 300);
         frame.setLayout(null);
         frame.setVisible(true);
     }
 
-    public boolean isLogin_success(){
-        return this.login_success;
+    public boolean[] isLogin_success(){
+        return ar;
     }
 }
