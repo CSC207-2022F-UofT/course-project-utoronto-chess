@@ -7,7 +7,7 @@
 -Graphical UI with menu screen, game board, and chess sprites. \
 -Full support for local chess games. 
 
-## Strech Goals
+## Out of Scope
 -Chess AI \
 -Online Games \
 -ELO system 
