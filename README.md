@@ -3,14 +3,14 @@
 `UToronto Chess` is a chess program written in Java. It is a project for the course CSC207 at the University of Toronto. 
 
 ## Features
--Registration and login system, with SQLite persistence. \
--Graphical UI with menu screen, game board, and chess sprites. \
--Full support for local chess games. 
+- Registration and login system, with SQLite persistence. 
+- Graphical UI with menu screen, game board, and chess sprites. 
+- Full support for local chess games. 
 
 ## Out of Scope
--Chess AI \
--Online Games \
--ELO system 
+- Chess AI 
+- Online Games 
+- ELO system 
 
 ## How to run the program
 
