@@ -15,6 +15,10 @@ public class LoginWindow {
     private boolean[] ar = new boolean[1];
     private String user;
     public LoginWindow() {
+        /*
+        Initiates login window labels, icons, and input fields.
+        Does not return, only changes the value of the logged in boolean
+         */
         JPasswordField passwordtext = new JPasswordField();
         JTextField usertext = new JTextField(20);
         JFrame frame = new JFrame();
@@ -34,7 +38,7 @@ public class LoginWindow {
         passwordtext.setBounds(100, 50, 165, 25);
         sign_in.setBounds(10, 80, 90, 25);
         register.setBounds(110, 80, 90, 25);
-        success.setBounds(10, 135, 250, 150); // informs user if login was successful
+        success.setBounds(10, 105, 250, 150); // informs user if login was successful
 
         // sets the fonts for buttons
         username.setFont(new Font(null, Font.PLAIN, 12));
@@ -88,7 +92,16 @@ public class LoginWindow {
     }
 
     public boolean[] isLogin_success(){
+        /*
+        Fetcher method for login
+        * */
         return ar;
     }
-    public String get_username(){return this.user;}
+    public String get_username(){
+        /*
+        fetcher method for username
+        * */
+
+        return this.user;
+    }
 }
