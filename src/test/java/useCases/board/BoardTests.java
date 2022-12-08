@@ -93,8 +93,8 @@ class BoardTests {
     @Test
     @DisplayName("Valid Move")
     void testMovePiece() {
-        int[] start = {1, 0};
-        int[] end = {2, 0};
+        int[] start = {6, 0};
+        int[] end = {5, 0};
         Assertions.assertTrue(this.board.movePiece(start, end));
     }
 
