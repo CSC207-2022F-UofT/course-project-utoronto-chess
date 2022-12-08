@@ -1,4 +1,4 @@
-package usecases.database;
+package useCases.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

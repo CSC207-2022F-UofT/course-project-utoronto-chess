@@ -1,7 +1,7 @@
 package views;
 
 
-import usecases.game.Game;
+import useCases.game.Game;
 
 import java.awt.*;
 import java.awt.event.*;

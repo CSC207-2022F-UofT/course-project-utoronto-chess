@@ -1,4 +1,4 @@
-import usecases.game.Game;
+import useCases.game.Game;
 import views.ChessPanel;
 
 public class UTorontoChess {

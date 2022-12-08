@@ -1,4 +1,4 @@
-package usecases.board;
+package useCases.board;
 
 import entities.pieces.*;
 import org.junit.jupiter.api.Assertions;
