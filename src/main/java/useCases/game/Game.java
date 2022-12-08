@@ -9,7 +9,7 @@ public class Game {
 
     private boolean isOver;
 
-    private final Board board = new Board();
+    private static final Board board = new Board();
 
 
     public boolean isOver() {
@@ -31,7 +31,7 @@ public class Game {
         }
     }
 
-    public Piece[][] getBoard() {
+    public static Piece[][] getBoard() {
         return board.getChessBoard();
     }
 

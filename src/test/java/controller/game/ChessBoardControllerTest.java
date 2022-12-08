@@ -1,6 +1,7 @@
 package controller.game;
 
 import org.junit.jupiter.api.Test;
+import useCases.board.Board;
 import useCases.game.Game;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,21 +18,12 @@ class ChessBoardControllerTest {
     @Test
     void movePiece() {
         Game game = new Game();
+        Board board = new Board();
         ChessBoardController controller = new ChessBoardController();
-        int[] start = new int[2];
-        int[] end = new int[2];
-        start[0] = 1;
-        start[1] = 0;
-        end[0] = 2;
-        end[1] = 0;
+        int[] start = {6, 0};
+        int[] end = {5, 0};
+        board.movePiece(start, end);
         controller.movePiece(game, start, end);
-        assertEquals(true, controller.isSuccessfulMove());
-    }
-
-    @Test
-    void isSuccessfulMove() {
-        ChessBoardController controller = new ChessBoardController();
-        controller.isSuccessfulMove();
-        assertEquals(false, controller.isSuccessfulMove());
+        assertEquals(board.getChessBoard()[5][0].toString(), Game.getBoard()[5][0].toString());
     }
 }
