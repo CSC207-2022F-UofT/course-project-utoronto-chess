@@ -1,7 +1,7 @@
-package usecases.board;
+package useCases.board;
 
 import entities.pieces.*;
-import usecases.game.Game;
+import useCases.game.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
