@@ -1,13 +1,17 @@
 package controller.database;
 import entities.user.User;
 import useCases.database.UserInteractor;
-import java.sql.SQLException;
 
 public class UserController {
 
     private User currentUser = null;
-    private static final SQLPresenter sqlPresenter = new SQLPresenter();
+
+    private final DatabaseGateway gateWay;
     private static final UserInteractor userInteractor = new UserInteractor();
+
+    public UserController(DatabaseGateway gateWay) {
+        this.gateWay = gateWay;
+    }
 
     /** Attempts to register a new user with the given username and password by connecting to the database.
      * @param username desired username
@@ -18,13 +22,13 @@ public class UserController {
         User user = userInteractor.newUserRequest(username, password);
         if (user != null) {
             try {
-                if (!sqlPresenter.lookupUsername(user.getUsername())) {
-                    sqlPresenter.addUser(user);
+                if (!gateWay.lookupUsername(user.getUsername())) {
+                    gateWay.addUser(user);
                     return true;
                 }
                 System.out.println("Username already exists.");
                 return false;
-            } catch (SQLException e) {
+            } catch (RuntimeException e) {
                 System.out.println("Could not connect to database.");
                 return false;
             }
@@ -42,11 +46,11 @@ public class UserController {
         User user = userInteractor.newUserRequest(username, password);
         if (user != null) {
             try {
-                if (sqlPresenter.checkCredentials(user)) {
+                if (gateWay.checkCredentials(user)) {
                     currentUser = user;
                     return true;
                 }
-            } catch (SQLException e) {
+            } catch (RuntimeException e) {
                 System.out.println("Could not find user in database.");
                 throw new RuntimeException(e);
             }
@@ -62,8 +66,8 @@ public class UserController {
      */
     public int getELO(String username) throws RuntimeException {
         try {
-            return sqlPresenter.lookupELO(username);
-        } catch (SQLException e) {
+            return gateWay.lookupELO(username);
+        } catch (RuntimeException e) {
             System.out.println("Could not connect to database.");
             throw new RuntimeException(e);
         }
@@ -76,8 +80,8 @@ public class UserController {
      */
     public void updateELO(String username, int elo) throws RuntimeException {
         try {
-            sqlPresenter.updateELO(username, elo);
-        } catch (SQLException e) {
+            gateWay.updateELO(username, elo);
+        } catch (RuntimeException e) {
             System.out.println("Could not find user in database.");
             throw new RuntimeException(e);
         }
@@ -89,17 +93,21 @@ public class UserController {
      */
     public void deleteUser(String username) {
         try {
-            sqlPresenter.deleteUser(username);
-        } catch (SQLException e) {
+            gateWay.deleteUser(username);
+        } catch (RuntimeException e) {
             System.out.println("Could not find user in database.");
             throw new RuntimeException(e);
         }
     }
 
+    /** Returns the current user.
+     * @return current user
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /** Logs out the current user. */
     public void logout() {
         currentUser = null;
     }

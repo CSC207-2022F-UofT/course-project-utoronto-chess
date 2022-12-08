@@ -1,6 +1,5 @@
 package controller.game;
 
-
 import entities.pieces.Piece;
 import useCases.game.Game;
 
