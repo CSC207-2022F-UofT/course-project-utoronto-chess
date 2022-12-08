@@ -1,8 +1,8 @@
 package views;
 
 import controller.game.ChessBoardController;
-import entities.pieces.*;
-import usecases.game.Game;
+import entities.pieces.Piece;
+import useCases.game.Game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -61,13 +61,11 @@ class ChessPanelContent extends JPanel implements MouseListener {
         }
     }
 
-    public Image load(String name) { //loads images
-        return new ImageIcon(name).getImage();
-    }
-
-    /*
-     *   Paints the chess board and the pieces on the board
-     *  @param g - the graphics object used to draw the board and pieces
+    /**
+     * This method draws all aspects of the chess game.
+     * Includes functions to draw board and pieces
+     * Is called when a change needed to be displayed
+     * @param g The Graphics class is the abstract base class for all graphics.
      */
     @Override
     public void paint(Graphics g) {
@@ -146,24 +144,23 @@ class ChessPanelContent extends JPanel implements MouseListener {
         }
     }
 
-
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mousePressed(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    // Gets info when mouse is pressed
-    @Override
-    public void mousePressed(MouseEvent e) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseEntered(MouseEvent mouseEvent) {
+
     }
 
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
 }

@@ -1,4 +1,4 @@
-package usecases.database;
+package useCases.database;
 
 // use case layer
 

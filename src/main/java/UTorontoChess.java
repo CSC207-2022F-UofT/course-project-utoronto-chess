@@ -1,11 +1,8 @@
-import usecases.game.Game;
-import views.ChessPanel;
+import views.Menu;
 
 public class UTorontoChess {
 
     public static void main(String[] arguments) {
-        Game game = new Game();
-        ChessPanel chessPanel = new ChessPanel(game);
-
+        Menu menu = new Menu();
     }
 }
