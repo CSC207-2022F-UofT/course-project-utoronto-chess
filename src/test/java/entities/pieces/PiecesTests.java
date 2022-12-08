@@ -11,7 +11,7 @@ class PiecesTests {
 
     //    Tests that both the black and white pawns can be moved one square away from their starting position
     @Test
-    @DisplayName("Pawn movement test")
+    @DisplayName("Pawn movement test 1")
     void testMovePawnOneSquare() {
         Piece[][] board = this.board.getChessBoard();
         Assertions.assertTrue(board[1][0].canMove(board, new int[]{1, 0}, new int[]{2, 0}));
@@ -22,6 +22,7 @@ class PiecesTests {
 
     //    Tests that both the black and white pawns can be moved two squares from their starting positions
     @Test
+    @DisplayName("Pawn movement test 2")
     void testMovePawnTwoSquares() {
         Piece[][] board = this.board.getChessBoard();
         Assertions.assertTrue(board[1][0].canMove(board, new int[]{1, 0}, new int[]{3, 0}));
@@ -33,6 +34,7 @@ class PiecesTests {
     //  Tests that knights can be moved according to their rules
     //  Checks initial movement from starting position as well as subsequent movement to the edge of the board
     @Test
+    @DisplayName("Knight movement test")
     void testMoveKnight() {
         Piece[][] board = this.board.getChessBoard();
         Assertions.assertTrue(board[0][1].canMove(board, new int[]{0,1}, new int[]{2,2}));
@@ -55,6 +57,7 @@ class PiecesTests {
 
     //  Tests that bishops can be moved according to their rules
     @Test
+    @DisplayName("Bishop movement test")
     void testMoveBishop() {
         Piece[][] board = this.board.getChessBoard();
 //        Moves the pawn out of the way to allow the bishop to move
@@ -72,6 +75,7 @@ class PiecesTests {
 
     //  Tests that rooks can be moved according to their rules
     @Test
+    @DisplayName("Rook movement test")
     void testMoveRook() {
         Piece[][] board = this.board.getChessBoard();
 //        Moves the pawn out of the way to allow the rook to move
@@ -89,6 +93,7 @@ class PiecesTests {
 
     //  Tests that queens can be moved according to their rules
     @Test
+    @DisplayName("Queen movement test")
     void testMoveQueen() {
         Piece[][] board = this.board.getChessBoard();
 //        Moves the pawn out of the way to allow the queen to move
@@ -114,6 +119,7 @@ class PiecesTests {
 
     //  Tests that kings can be moved according to their rules
     @Test
+    @DisplayName("King movement test")
     void testMoveKing() {
         Piece [][] board = this.board.getChessBoard();
 //        Moves the pawn out of the way to allow the king to move
