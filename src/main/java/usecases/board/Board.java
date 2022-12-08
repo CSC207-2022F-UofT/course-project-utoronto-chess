@@ -1,9 +1,11 @@
-package useCases.board;
+package usecases.board;
 
 import entities.pieces.*;
-import useCases.game.Game;
+import usecases.game.Game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
@@ -115,7 +117,7 @@ public class Board {
 
         // Auto Queen promotion for pawn
         if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
-           piece = new Queen(piece.isWhite());
+            piece = new Queen(piece.isWhite());
         }
 
         chessBoard[end[0]][end[1]] = piece;
@@ -133,23 +135,107 @@ public class Board {
         chessBoard[rookY][rookX] = null;
     }
 
+    /*
+     *  Gives the coordinate of king of the given colour
+     */
+    private int[] findKing(boolean isWhite){
+        if (isWhite){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] instanceof King && chessBoard[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] instanceof King && !chessBoard[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        return new int[] {-99, -99};
+    }
+
+    /*
+     *  Gives a list of Boards after one move of white piece
+     */
+    public List<Board> getAllValidMovesWhite() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] != null && chessBoard[i][j].isWhite()){
+                        goOverAllCells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    /*
+     *  Gives a list of Boards after one move of black piece
+     */
+    public List<Board> getAllValidMovesBlack() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (!Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] != null && !chessBoard[i][j].isWhite()){
+                        goOverAllCells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    private void goOverAllCells(ArrayList<Board> result, int i, int j) {
+        for (int k = 0; k <= 7; k++) {
+            for (int l = 0; l <= 7; l++) {
+                Board board1 = this.copy();
+                if(board1.movePiece(new int[]{i, j}, new int[]{k, l})){
+                    result.add(board1);}
+            }
+        }
+    }
+
+    public Board copy(){
+        Board board1 = new Board();
+        for (int i = 0; i <= 7; i++) {
+            System.arraycopy(chessBoard[i], 0, board1.chessBoard[i], 0, 8);
+        }
+        return board1;
+    }
 
     /*
      *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
      */
-    public boolean check() {
-        // TODO
+    public boolean check(boolean white) {
+        if (white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = chessBoard[i][j];
+                    if(piece!= null && !piece.isWhite() && piece.canMove(chessBoard, new int[]{i, j}, new int[]{findKing(true)[0], findKing(true)[1]})){
+                    return true;
+                    }
+                }
+            }
+        }
+        if (!white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = chessBoard[i][j];
+                    if(piece!= null && piece.isWhite() && piece.canMove(chessBoard, new int[]{i, j}, new int[]{findKing(false)[0], findKing(false)[1]})){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
-
-    /*
-     *   Checks if the king of the given color is in checkmate
-     */
-    public boolean checkmate() {
-        // TODO
-        return false;
-    }
-
 
 
     /*

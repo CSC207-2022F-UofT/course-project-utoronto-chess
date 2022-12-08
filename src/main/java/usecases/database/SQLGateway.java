@@ -1,4 +1,4 @@
-package useCases.database;
+package usecases.database;
 import entities.user.User;
 
 import java.sql.SQLException;

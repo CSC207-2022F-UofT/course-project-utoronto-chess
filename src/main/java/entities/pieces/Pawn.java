@@ -7,9 +7,6 @@ public class Pawn extends Piece{
         super(white);
     }
 
-    public void promotion() {
-
-    }
 
     @Override
     public boolean canMove(Piece[][] board, int[] start, int[] end) {

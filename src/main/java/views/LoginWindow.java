@@ -1,15 +1,12 @@
 package views;
 
 import controller.database.UserController;
-import useCases.database.UserInteractor;
+import usecases.database.UserInteractor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LoginWindow {
     private boolean[] ar = new boolean[1];

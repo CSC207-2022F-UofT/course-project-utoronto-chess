@@ -1,6 +1,6 @@
 package controller.database;
 
-import useCases.database.SQLGateway;
+import usecases.database.SQLGateway;
 import entities.user.User;
 
 import java.sql.*;
