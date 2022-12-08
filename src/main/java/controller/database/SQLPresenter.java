@@ -2,16 +2,15 @@ package controller.database;
 
 import useCases.database.SQLGateway;
 import entities.user.User;
-
 import java.sql.*;
 
 // use case layer
 
-public class SQLPresenter implements SQLGateway {
+public class SQLPresenter implements DatabaseGateway {
 
     private final Connection conn;
 
-    public SQLPresenter() {
+    public SQLPresenter() throws RuntimeException{
         try {
             Class.forName("org.sqlite.JDBC");
             this.conn = DriverManager.getConnection("jdbc:sqlite:chessdb.sqlite");
@@ -28,9 +27,9 @@ public class SQLPresenter implements SQLGateway {
      * Attempts to add a user to the database.
      *
      * @param user user to add to database
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
             ps.setString(1, user.getUsername());
@@ -38,7 +37,7 @@ public class SQLPresenter implements SQLGateway {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not add user to database");
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
@@ -47,9 +46,9 @@ public class SQLPresenter implements SQLGateway {
      *
      * @param username username to search for in database
      * @return true if username is found, false otherwise
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public boolean lookupUsername(String username) throws SQLException {
+    public boolean lookupUsername(String username) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
             ps.setString(1, username);
@@ -57,7 +56,7 @@ public class SQLPresenter implements SQLGateway {
             return rs.next();
         } catch (SQLException e) {
             System.out.println("Could not connect to database");
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
@@ -67,9 +66,9 @@ public class SQLPresenter implements SQLGateway {
      *
      * @param user user to check credentials for
      * @return true if credentials match, false otherwise
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public boolean checkCredentials(User user) throws SQLException {
+    public boolean checkCredentials(User user) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             ps.setString(1, user.getUsername());
@@ -78,7 +77,7 @@ public class SQLPresenter implements SQLGateway {
             return rs.next();
         } catch (SQLException e) {
             System.out.println("Could not find user in database");
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,9 +86,9 @@ public class SQLPresenter implements SQLGateway {
      *
      * @param username user to check ELO
      * @return desired user's ELO
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public int lookupELO(String username) throws SQLException {
+    public int lookupELO(String username) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT ELO FROM users WHERE username = ?");
             ps.setString(1, username);
@@ -97,7 +96,7 @@ public class SQLPresenter implements SQLGateway {
             return rs.getInt("ELO");
         } catch (SQLException e) {
             System.out.println("Could not connect to database");
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
@@ -106,9 +105,9 @@ public class SQLPresenter implements SQLGateway {
      *
      * @param username user to update ELO
      * @param elo new ELO
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public void updateELO(String username, int elo) throws SQLException {
+    public void updateELO(String username, int elo) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET ELO = ? WHERE username = ?");
             ps.setInt(1, elo);
@@ -116,24 +115,23 @@ public class SQLPresenter implements SQLGateway {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not update user in database");
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
     /**
      * Deletes a user from the database.
-     *
      * @param username user to delete
-     * @throws SQLException if there is an error connecting with databse
+     * @throws SQLException if there is an error connecting with database
      */
-    public void deleteUser(String username) throws SQLException {
+    public void deleteUser(String username) throws RuntimeException {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE username = ?");
             ps.setString(1, username);
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not delete user from database");
-            throw e;
+            throw new RuntimeException(e);
         }
 
     }

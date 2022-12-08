@@ -1,6 +1,5 @@
 package controller.game;
 
-
 import entities.pieces.Piece;
 import org.jetbrains.annotations.NotNull;
 import useCases.game.Game;

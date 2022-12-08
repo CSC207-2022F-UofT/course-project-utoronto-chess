@@ -1,7 +1,6 @@
 package controller.database;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,27 +8,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserControllerTest {
 
-    private UserController userController;
-
-    @BeforeEach
-    void setUp() {
-        this.userController = new UserController();
-    }
-
     @AfterEach
-    void cleanUp() {
-        try {
-            userController.deleteUser("adminuser");
-        } catch (Exception e) {
-            // do nothing
-        }
+    void tearDown() {
+        userController.deleteUser("adminuser");
+        userController.deleteUser("##");
     }
+
+    private static final DatabaseGateway gateWay = new SQLPresenter();
+    private static final UserController userController = new UserController(gateWay);
+
 
     @Test
     @DisplayName("register should return false if the username already exists.")
     void testRegisterUsernameTaken() {
         userController.register("adminuser", "Testpass123!");
         assertFalse(userController.register("adminuser", "Testerpass123!"));
+        userController.deleteUser("adminuser");
     }
 
     @Test
@@ -89,8 +83,8 @@ class UserControllerTest {
     @Test
     @DisplayName("updateELO should not update anything if the user does not exist")
     void updateELOInvalidUser() {
-        userController.updateELO("admin", 1200);
-        assertEquals(0, userController.getELO("admin"));
+        userController.updateELO("adminuser", 1200);
+        assertEquals(0, userController.getELO("adminuser"));
     }
 
     @Test
@@ -103,7 +97,7 @@ class UserControllerTest {
         }
 
     @Test
-    @DisplayName("logout should set the curretuser to null")
+    @DisplayName("logout should set the current user to null")
     void testLogout() {
         userController.register("adminuser", "Testpass123!");
         userController.login("adminuser", "Testpass123!");
