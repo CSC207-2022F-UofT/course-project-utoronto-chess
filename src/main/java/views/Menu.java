@@ -72,8 +72,8 @@ static class MenuPanel extends JPanel implements ActionListener, MouseListener {
         int y = p.y;
         if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
             LoginWindow newwindow = new LoginWindow();// opens login window when clicked
-            MenuPanel.this.loginSuccess = newwindow.isLogin_success();
-            username = newwindow.get_username();
+            MenuPanel.this.loginSuccess = newwindow.isLoginSuccess();
+            username = newwindow.getUsername();
         } else if (600 < x && x < 810 && 280 < y && y < 350){
             if(MenuPanel.this.loginSuccess[0]){
                 Game game = new Game();
