@@ -1,6 +1,9 @@
 package views;
 
+import controller.database.DatabaseGateway;
+import controller.database.SQLPresenter;
 import controller.database.UserController;
+import useCases.database.UserInteractor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,8 +46,9 @@ public class LoginWindow {
         username.setFont(new Font(null, Font.PLAIN, 12));
         password.setFont(new Font(null, Font.PLAIN, 12));
 
+        DatabaseGateway gateWay = new SQLPresenter();
 
-        UserController checker = new UserController();
+        UserController checker = new UserController(gateWay);
         // Action when user clicks sign in button
         sign_in.addActionListener(new ActionListener() {
             @Override

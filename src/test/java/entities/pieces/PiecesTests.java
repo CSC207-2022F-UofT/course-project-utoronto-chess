@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import useCases.board.Board;
 //import useCases.game.Game;
 
-public class PiecesTests {
+class PiecesTests {
     //    Creates a board with starting pieces to run once before all tests
     private final Board board = new Board();
 
