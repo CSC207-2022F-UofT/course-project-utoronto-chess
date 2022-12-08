@@ -28,6 +28,9 @@ static class MenuPanel extends JPanel implements ActionListener, MouseListener {
     private boolean[] loginSuccess = new boolean[1];
     int dx = 900;
     int dy = 500;
+
+    Rectangle loginButton = new Rectangle(500 ,300, 50, 50);
+    Rectangle playButton = new Rectangle(600, 250, 200, 70);
     public MenuPanel() {
         /*
           Adds listeners for mouses and sets logic instance variable for user login
@@ -48,8 +51,8 @@ static class MenuPanel extends JPanel implements ActionListener, MouseListener {
         g.drawString("Play", 660, 300);
         g.drawString("Chess Game", 100, 100);
         g.setColor(Color.BLACK);
-        g.drawRect(500 ,300, 50, 50); // button for login
-        g.drawRect(600, 250, 200, 70); // button 3
+        g.drawRect(loginButton.x, loginButton.y, loginButton.width, loginButton.height); // button for login
+        g.drawRect(playButton.x, playButton.y, playButton.width, playButton.height); // play button
         if(loginSuccess[0]){
            g.drawString(username, 500, 300); //displays username in corner once logged in
             g.clearRect(600, 335, 200, 10); // cleans the 'requires' log in
@@ -67,14 +70,11 @@ static class MenuPanel extends JPanel implements ActionListener, MouseListener {
     */
     @Override
     public void mouseClicked(MouseEvent e) {
-        Point p  = MouseInfo.getPointerInfo().getLocation();
-        int x = p.x;
-        int y = p.y;
-        if(500< x && x < 560 && 330 < y && y < 380){ // this checks if mouse clicks over button
+        if(loginButton.contains(e.getX(), e.getY())){ // this checks if mouse clicks over button
             LoginWindow newwindow = new LoginWindow();// opens login window when clicked
             MenuPanel.this.loginSuccess = newwindow.isLoginSuccess();
             username = newwindow.getUsername();
-        } else if (600 < x && x < 810 && 280 < y && y < 350){
+        } else if (playButton.contains(e.getX(), e.getY())){
             if(MenuPanel.this.loginSuccess[0]){
                 Game game = new Game();
                 ChessPanel chessPanel = new ChessPanel(game);
