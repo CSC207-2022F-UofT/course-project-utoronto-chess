@@ -3,7 +3,7 @@ package controller.game;
 
 import entities.pieces.Piece;
 import org.jetbrains.annotations.NotNull;
-import useCases.game.Game;
+import usecases.game.Game;
 
 // Controller classes that handles user input from ChessPanel and makes the appropriate calls to the board class
 public class ChessBoardController {

@@ -1,14 +1,13 @@
 package views;
 
 
-import useCases.game.Game;
+import usecases.game.Game;
 
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 import java.awt.MouseInfo;
-import java.sql.SQLOutput;
 
 public class Anim extends JFrame {
 

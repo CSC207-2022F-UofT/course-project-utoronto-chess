@@ -1,7 +1,5 @@
-import useCases.game.Game;
-import views.Anim;
+import usecases.game.Game;
 import views.ChessPanel;
-import views.LoginWindow;
 
 public class UTorontoChess {
 
