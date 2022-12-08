@@ -2,7 +2,7 @@ package controller.database;
 
 import entities.user.User;
 import useCases.database.UserInteractor;
-
+import java.sql.SQLException;
 
 public class UserController {
 

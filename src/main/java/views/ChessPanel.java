@@ -1,7 +1,7 @@
 package views;
 
 import controller.game.ChessBoardController;
-import entities.pieces.*;
+import entities.pieces.Piece;
 import useCases.game.Game;
 
 import javax.imageio.ImageIO;
@@ -26,9 +26,7 @@ public class ChessPanel extends JFrame{
     }
 }
 
-class ChessPanelContent extends JPanel implements KeyListener, ActionListener, MouseListener {
-    private final boolean[] keys;
-    private final Timer myTimer;
+class ChessPanelContent extends JPanel implements MouseListener {
 
     Rectangle[][] grid;
     String moveMode;
@@ -55,16 +53,11 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
 
         selectRect = new Rectangle();
 
-        keys = new boolean[KeyEvent.KEY_LAST + 1];
-        myTimer = new Timer(1000, this);
-//        Font fnt = new Font("Comic Sans", Font.BOLD, 30);
-
         // Size of Panel
         int dx = 900;
         int dy = 500;
 
         setPreferredSize(new Dimension(dx, dy));
-        addKeyListener(this); //key inputs
         addMouseListener(this); // mouse inputs
 
         // Create grid for chess board
@@ -76,23 +69,26 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         }
     }
 
-    public Image load(String name) { //loads images
-        return new ImageIcon(name).getImage();
-    }
 
-
-    // addNotify triggers when the Panel gets added to the frame.
-    // Using this avoids null-pointer exceptions.
-    // x.y() - if x is null, we get null-pointer exception
+    /**
+     * addNotify triggers when the Panel gets added to the frame.
+     * Using this avoids null-pointer exceptions.
+     * x.y() - if x is null, we get null-pointer exception
+     */
     @Override
     public void addNotify() {
         super.addNotify();
         setFocusable(true);
         requestFocus();
-        myTimer.start();
     }
 
-    //used to draw all aspects of the game
+    /**
+     * This method draws all aspects of the chess game.
+     * Includes functions to draw board and pieces
+     * Is called when a change needed to be displayed
+     *
+     * @param g The Graphics class is the abstract base class for all graphics.
+     */
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
@@ -133,7 +129,12 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         }
     }
 
-    //Checks if mouse is clicked
+    /**
+     * This method checks whether a player clicks on a piece and tracks where they want to move it
+     * The JPanel is repainted here since changes happens due to mouse clicks
+     *
+     * @param e An event which indicates that a mouse action occurred in a component
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         for(int i = 0; i < 8; i++){
@@ -158,41 +159,23 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         }
     }
 
-
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mousePressed(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    // Gets info when mouse is pressed
-    @Override
-    public void mousePressed(MouseEvent e) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseEntered(MouseEvent mouseEvent) {
+
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void mouseExited(MouseEvent mouseEvent) {
 
-    @Override
-    public void keyPressed(KeyEvent e) {
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        keys[e.getKeyCode()] = false;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-    }
-
 }
