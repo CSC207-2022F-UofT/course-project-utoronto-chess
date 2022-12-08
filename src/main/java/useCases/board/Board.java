@@ -23,6 +23,7 @@ public class Board {
 
     /*
      * Getter for the chess board
+     * @return the chess board
      */
     public Piece[][] getChessBoard() {
         return chessBoard;
@@ -67,10 +68,9 @@ public class Board {
     /*
         * Moves a piece from one position to another
         * Called from the Game class
-        * Returns true if the move was successful
-        * Returns false if the move was unsuccessful
-        @param start: the starting position of the piece
-        @param end: the ending position of the piece
+        * @param start: the starting position of the piece
+        * @param end: the ending position of the piece
+        * @return true if the move was successful, false otherwise
      */
     public boolean movePiece(int[] start, int[] end) {
         Piece piece = chessBoard[start[0]][start[1]];
@@ -80,31 +80,26 @@ public class Board {
 
         // Same location
         if (Arrays.equals(start, end)) {
-            System.out.println("Same position");
             return false;
         }
 
         // No piece at this position
         else if (piece == null) {
-            System.out.println("No piece at start position");
             return false;
         }
 
         // Not a playable piece
         else if (piece.isWhite() != Game.isWhiteTurn()) {
-            System.out.println("Not your turn");
             return false;
         }
 
         // Not legal move
         else if (!piece.canMove(chessBoard, start, end)) {
-            System.out.println("Illegal move");
             return false;
         }
 
         // Same color piece
         else if (chessBoard[end[0]][end[1]] != null && chessBoard[end[0]][end[1]].isWhite() == piece.isWhite()) {
-            System.out.println("Same color piece");
             return false;
         }
 
@@ -162,6 +157,7 @@ public class Board {
 
     /*
      *  Gives a list of Boards after one move of white piece
+     *  @return a list of boards
      */
     public List<Board> getAllValidMovesWhite() {
         ArrayList<Board> result = new ArrayList<>();
@@ -178,6 +174,7 @@ public class Board {
 
     /*
      *  Gives a list of Boards after one move of black piece
+     * @return a list of boards
      */
     public List<Board> getAllValidMovesBlack() {
         ArrayList<Board> result = new ArrayList<>();
@@ -202,6 +199,10 @@ public class Board {
         }
     }
 
+    /*
+     *  Gives a copy of the board
+     *  @return a copy of the board
+     */
     public Board copy(){
         Board board1 = new Board();
         for (int i = 0; i <= 7; i++) {
@@ -211,10 +212,12 @@ public class Board {
     }
 
     /*
-     *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
+     *   Checks if the king of the given color is in check
+     *  @param isWhite: the color of the king
+     * @return true if the king is in check
      */
-    public boolean check(boolean white) {
-        if (white){
+    public boolean check(boolean isWhite) {
+        if (isWhite){
             for (int i = 0; i <= 7; i++) {
                 for (int j = 0; j <= 7; j++) {
                     Piece piece = chessBoard[i][j];
@@ -224,7 +227,7 @@ public class Board {
                 }
             }
         }
-        if (!white){
+        if (!isWhite){
             for (int i = 0; i <= 7; i++) {
                 for (int j = 0; j <= 7; j++) {
                     Piece piece = chessBoard[i][j];
@@ -236,7 +239,6 @@ public class Board {
         }
         return false;
     }
-
 
     /*
      *   Prints the current board to the console

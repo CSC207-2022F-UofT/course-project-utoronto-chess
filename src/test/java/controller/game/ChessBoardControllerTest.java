@@ -12,7 +12,7 @@ class ChessBoardControllerTest {
     void getBoard() {
         Game game = new Game();
         ChessBoardController controller = new ChessBoardController();
-        assertEquals(game.getBoard(), controller.getBoard(game));
+        assertEquals(Game.getBoard(), controller.getBoard(game));
     }
 
     @Test

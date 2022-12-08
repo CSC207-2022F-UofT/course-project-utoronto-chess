@@ -21,18 +21,16 @@ public class ChessPanel extends JFrame{
         ChessPanelContent panel = new ChessPanelContent(game);//creates a new panel in the frame
         add(panel);//adds panel to the frame
         pack();
-        // setResizable(false);
         setVisible(true);
     }
 }
 
 class ChessPanelContent extends JPanel implements MouseListener {
-
     Rectangle[][] grid;
-    String moveMode;
+    String moveMode = "select";
 
-    int[] start;
-    int[] end;
+    int[] start = new int[2];
+    int[] end = new int[2];
 
     Game game;
 
@@ -40,21 +38,15 @@ class ChessPanelContent extends JPanel implements MouseListener {
 
     ChessBoardController controller = new ChessBoardController();
 
-//    private Image background;
-
     public ChessPanelContent(Game game) {
 
         // Assign class variables
         this.game = game;
-        moveMode = "select";
-
-        start = new int[2];
-        end = new int[2];
 
         selectRect = new Rectangle();
 
         // Size of Panel
-        int dx = 900;
+        int dx = 500;
         int dy = 500;
 
         setPreferredSize(new Dimension(dx, dy));
@@ -69,24 +61,10 @@ class ChessPanelContent extends JPanel implements MouseListener {
         }
     }
 
-
-    /**
-     * addNotify triggers when the Panel gets added to the frame.
-     * Using this avoids null-pointer exceptions.
-     * x.y() - if x is null, we get null-pointer exception
-     */
-    @Override
-    public void addNotify() {
-        super.addNotify();
-        setFocusable(true);
-        requestFocus();
-    }
-
     /**
      * This method draws all aspects of the chess game.
      * Includes functions to draw board and pieces
      * Is called when a change needed to be displayed
-     *
      * @param g The Graphics class is the abstract base class for all graphics.
      */
     @Override
@@ -129,12 +107,17 @@ class ChessPanelContent extends JPanel implements MouseListener {
         }
     }
 
-    /**
-     * This method checks whether a player clicks on a piece and tracks where they want to move it
-     * The JPanel is repainted here since changes happens due to mouse clicks
-     *
-     * @param e An event which indicates that a mouse action occurred in a component
-     */
+    private void gameOverPrompt() {
+        if (controller.checkmate(game)) {
+            if (game.whiteCheckmate()) {
+                JOptionPane.showMessageDialog(null, "Black wins!");
+            } else {
+                JOptionPane.showMessageDialog(null, "White wins!");
+            }
+        }
+    }
+
+    //Checks if mouse is clicked
     @Override
     public void mouseClicked(MouseEvent e) {
         for(int i = 0; i < 8; i++){
@@ -154,6 +137,8 @@ class ChessPanelContent extends JPanel implements MouseListener {
                     moveMode = "select";
                     start = new int[2];
                     end = new int[2];
+                    gameOverPrompt();
+
                 }
             }
         }

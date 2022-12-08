@@ -15,4 +15,8 @@ public class ChessBoardController {
         game.movePiece(start, end);
     }
 
+    public boolean checkmate(Game game) {
+        return game.over();
+    }
+
 }

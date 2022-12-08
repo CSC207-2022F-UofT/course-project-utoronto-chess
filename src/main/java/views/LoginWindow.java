@@ -3,7 +3,6 @@ package views;
 import controller.database.DatabaseGateway;
 import controller.database.SQLPresenter;
 import controller.database.UserController;
-import useCases.database.UserInteractor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,7 @@ import java.awt.event.ActionListener;
 
 
 public class LoginWindow {
-    private boolean[] ar = new boolean[1];
+    private final boolean[] ar = new boolean[1];
     private String user;
     /**
     Initiates login window labels, icons, and input fields.
@@ -24,21 +23,18 @@ public class LoginWindow {
         JFrame frame = new JFrame();
         JLabel username = new JLabel("User Name");
         JLabel password = new JLabel("Password");
-        JButton sign_in = new JButton("Sign in");
+        JButton signIn = new JButton("Sign in");
         JButton register = new JButton("Register");
         JLabel success = new JLabel("<html>username must only contain alphanumeric <br/>characters," +
                 " underscores, hyphens, and periods <br/> Password must have one letter, number, " +
                 "capital letter, and symbol. <br/> " +
                 "Successful passwords include: Aiden123!<html>");
 
-
-        //UserInteractor u1 = new UserInteractor();
-
         username.setBounds(10, 20 , 80, 25);
         usertext.setBounds(100, 20, 165, 25);
         password.setBounds(10, 50, 80, 25);
         passwordtext.setBounds(100, 50, 165, 25);
-        sign_in.setBounds(10, 80, 90, 25);
+        signIn.setBounds(10, 80, 90, 25);
         register.setBounds(110, 80, 90, 25);
         success.setBounds(10, 105, 250, 150); // informs user if login was successful
 
@@ -49,8 +45,9 @@ public class LoginWindow {
         DatabaseGateway gateWay = new SQLPresenter();
 
         UserController checker = new UserController(gateWay);
+        
         // Action when user clicks sign in button
-        sign_in.addActionListener(new ActionListener() {
+        signIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checker.login(usertext.getText(), String.valueOf(passwordtext.getPassword()))){
@@ -64,6 +61,7 @@ public class LoginWindow {
                 // check username and password here
             }
         });
+        
         // Action when user clicks register button
         register.addActionListener(new ActionListener() {
             @Override
@@ -83,7 +81,7 @@ public class LoginWindow {
         frame.add(usertext);
         frame.add(password);
         frame.add(passwordtext);
-        frame.add(sign_in);
+        frame.add(signIn);
         frame.add(register);
         frame.add(success);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -91,18 +89,18 @@ public class LoginWindow {
         frame.setLayout(null);
         frame.setVisible(true);
     }
+    
     /**
     Fetcher method for login
     */
-    public boolean[] isLogin_success(){
-
+    public boolean[] isLoginSuccess(){
         return ar;
     }
+    
     /**
     fetcher method for username
     */
-    public String get_username(){
-
+    public String getUsername(){
         return this.user;
     }
 }
