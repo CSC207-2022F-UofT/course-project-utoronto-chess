@@ -1,4 +1,4 @@
-package usecases.game;
+package useCases.game;
 
 import entities.pieces.Piece;
 import usecases.board.Board;
