@@ -2,8 +2,8 @@ package entities.pieces;
 
 public class Bishop extends Piece {
 
-    public Bishop(boolean white, int column, int row) {
-        super(white,column, row);
+    public Bishop(boolean white) {
+        super(white);
     }
 
     @Override

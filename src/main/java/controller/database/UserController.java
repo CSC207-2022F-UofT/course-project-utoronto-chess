@@ -1,6 +1,8 @@
 package controller.database;
+
 import entities.user.User;
 import useCases.database.UserInteractor;
+
 
 public class UserController {
 

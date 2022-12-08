@@ -4,8 +4,8 @@ public class King extends Piece {
 
     private boolean hasCastled = false;
 
-    public King(boolean white, int column, int row) {
-        super(white, column, row);
+    public King(boolean white) {
+        super(white);
     }
 
     public boolean isCastlingDone(){

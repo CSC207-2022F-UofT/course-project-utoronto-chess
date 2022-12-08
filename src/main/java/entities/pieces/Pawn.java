@@ -3,13 +3,10 @@ package entities.pieces;
 public class Pawn extends Piece{
 
 
-    public Pawn(boolean white, int column, int row) {
-        super(white,column, row);
+    public Pawn(boolean white) {
+        super(white);
     }
 
-    public void promotion() {
-
-    }
 
     @Override
     public boolean canMove(Piece[][] board, int[] start, int[] end) {
