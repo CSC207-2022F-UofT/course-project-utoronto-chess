@@ -9,10 +9,18 @@ public class Game {
 
     private static final Board board = new Board();
 
+    /* Constructor */
+    public Game() {
+        whiteTurn = true;
+    }
+
     public boolean over() {
         return whiteCheckmate() || blackCheckmate();
     }
 
+    /* Checks to see if the white king is in check and/or checkmate
+     * @return true if white is in checkmate
+     */
     public boolean whiteCheckmate() {
         if (!isWhiteTurn()){
             whiteTurn = !whiteTurn;
@@ -35,8 +43,9 @@ public class Game {
         return true;
     }
 
-
-
+    /* Checks to see if the black king is in check and/or checkmate
+     * @return true if black is in checkmate
+     */
     public boolean blackCheckmate() {
         if (isWhiteTurn()){
             whiteTurn = ! whiteTurn;
@@ -59,33 +68,30 @@ public class Game {
         return true;
     }
 
-    public Game() {
-        whiteTurn = true;
-    }
-
-
     /*
         * Moves a piece from one position to another
+        * @param start: the starting position of the piece
+        * @param end: the ending position of the piece
      */
     public void movePiece(int[] start, int[] end) {
-            if (!over()) {
-                Board board1 = board.copy();
-                boolean success = board1.movePiece(start, end);
-                if (board1.check(whiteTurn)) {
-                    System.out.println("Checked");
-                    success = false;
-                }
-                if (success) {
-                    board.movePiece(start, end);
-                    whiteTurn = !whiteTurn;
-                }
+        if (!over()) {
+            boolean success = board.movePiece(start, end);
+            if (success) {
+                whiteTurn = !whiteTurn;
             }
+        }
     }
 
+    /* Gets the game board
+     * @return the game board
+     */
     public static Piece[][] getBoard() {
         return board.getChessBoard();
     }
 
+    /* Gets the current turn
+     * @return true if it is white's turn, false if it is black's turn
+     */
     public static boolean isWhiteTurn() {
         return whiteTurn;
     }
