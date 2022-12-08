@@ -7,7 +7,7 @@ public class Game {
 
     private static boolean whiteTurn;
 
-    private final Board board;
+    private static final Board board = new Board();
 
     public boolean over() {
         return whiteCheckmate() || blackCheckmate();
@@ -61,7 +61,6 @@ public class Game {
 
     public Game() {
         whiteTurn = true;
-        this.board = new Board();
     }
 
 
@@ -83,7 +82,7 @@ public class Game {
             }
     }
 
-    public Piece[][] getBoard() {
+    public static Piece[][] getBoard() {
         return board.getChessBoard();
     }
 
