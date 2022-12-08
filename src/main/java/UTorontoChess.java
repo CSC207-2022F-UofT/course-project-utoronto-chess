@@ -1,4 +1,3 @@
-
 import views.Menu;
 
 public class UTorontoChess {

@@ -3,20 +3,29 @@ package useCases.board;
 import entities.pieces.*;
 import useCases.game.Game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
-    Piece[][] board;
+    Piece[][] chessBoard;
     private static final String BOARD_BACKGROUND = "\u001B[40m";
     private static final String RESET_COLOR = "\u001B[0m";
 
+    /*
+     * Create a new board object and initialize the chess board with the correct pieces in the
+     * correct positions
+     */
     public Board() {
         this.createNewBoard();
     }
 
-    public Piece[][] getBoard() {
-        return board;
+    /*
+     * Getter for the chess board
+     */
+    public Piece[][] getChessBoard() {
+        return chessBoard;
     }
 
     /*
@@ -24,33 +33,33 @@ public class Board {
      */
     public void createNewBoard() {
 
-        this.board = new Piece[8][8];
+        this.chessBoard = new Piece[8][8];
         // Black pieces
-        this.board[0][0] = new Rook(false);
-        this.board[0][1] = new Knight(false);
-        this.board[0][2] = new Bishop(false);
-        this.board[0][3] = new Queen(false);
-        this.board[0][4] = new King(false);
-        this.board[0][5] = new Bishop(false);
-        this.board[0][6] = new Knight(false);
-        this.board[0][7] = new Rook(false);
+        this.chessBoard[0][0] = new Rook(false);
+        this.chessBoard[0][1] = new Knight(false);
+        this.chessBoard[0][2] = new Bishop(false);
+        this.chessBoard[0][3] = new Queen(false);
+        this.chessBoard[0][4] = new King(false);
+        this.chessBoard[0][5] = new Bishop(false);
+        this.chessBoard[0][6] = new Knight(false);
+        this.chessBoard[0][7] = new Rook(false);
 
         for (int i = 0; i < 8; i++) {
-            this.board[1][i] = new Pawn(false);
+            this.chessBoard[1][i] = new Pawn(false);
         }
 
         // White pieces
-        this.board[7][0] = new Rook(true);
-        this.board[7][1] = new Knight(true);
-        this.board[7][2] = new Bishop(true);
-        this.board[7][3] = new Queen(true);
-        this.board[7][4] = new King(true);
-        this.board[7][5] = new Bishop(true);
-        this.board[7][6] = new Knight(true);
-        this.board[7][7] = new Rook(true);
+        this.chessBoard[7][0] = new Rook(true);
+        this.chessBoard[7][1] = new Knight(true);
+        this.chessBoard[7][2] = new Bishop(true);
+        this.chessBoard[7][3] = new Queen(true);
+        this.chessBoard[7][4] = new King(true);
+        this.chessBoard[7][5] = new Bishop(true);
+        this.chessBoard[7][6] = new Knight(true);
+        this.chessBoard[7][7] = new Rook(true);
 
         for (int i = 0; i < 8; i++) {
-            this.board[6][i] = new Pawn(true);
+            this.chessBoard[6][i] = new Pawn(true);
         }
 
     }
@@ -58,9 +67,13 @@ public class Board {
     /*
         * Moves a piece from one position to another
         * Called from the Game class
+        * Returns true if the move was successful
+        * Returns false if the move was unsuccessful
+        @param start: the starting position of the piece
+        @param end: the ending position of the piece
      */
     public boolean movePiece(int[] start, int[] end) {
-        Piece piece = board[start[0]][start[1]];
+        Piece piece = chessBoard[start[0]][start[1]];
 
 
         // Handle all cases where a piece cannot be moved
@@ -84,13 +97,13 @@ public class Board {
         }
 
         // Not legal move
-        else if (!piece.canMove(board, start, end)) {
+        else if (!piece.canMove(chessBoard, start, end)) {
             System.out.println("Illegal move");
             return false;
         }
 
         // Same color piece
-        else if (board[end[0]][end[1]] != null && board[end[0]][end[1]].isWhite() == piece.isWhite()) {
+        else if (chessBoard[end[0]][end[1]] != null && chessBoard[end[0]][end[1]].isWhite() == piece.isWhite()) {
             System.out.println("Same color piece");
             return false;
         }
@@ -99,46 +112,130 @@ public class Board {
 
         // Castling
         if (piece instanceof King && Math.abs(end[1] - start[1]) == 2) {
-            int rookX = end[1] == 2 ? 0 : 7;
-            int rookY = end[0];
-            int rookNewX = end[1] == 2 ? 3 : 5;
-            int rookNewY = end[0];
-            board[rookNewY][rookNewX] = board[rookY][rookX];
-            board[rookY][rookX] = null;
+            this.castling(end);
         }
 
         // Auto Queen promotion for pawn
         if (piece instanceof Pawn && (end[0] == 0 || end[0] == 7)) {
-           piece = new Queen(piece.isWhite());
+            piece = new Queen(piece.isWhite());
         }
 
-        board[end[0]][end[1]] = piece;
-        board[start[0]][start[1]] = null;
+        chessBoard[end[0]][end[1]] = piece;
+        chessBoard[start[0]][start[1]] = null;
 
         return true;
     }
 
+    private void castling(int[] end) {
+        int rookX = end[1] == 2 ? 0 : 7;
+        int rookY = end[0];
+        int rookNewX = end[1] == 2 ? 3 : 5;
+        int rookNewY = end[0];
+        chessBoard[rookNewY][rookNewX] = chessBoard[rookY][rookX];
+        chessBoard[rookY][rookX] = null;
+    }
 
-    public void getAllValidMoves() {
-        // TODO
+    /*
+     *  Gives the coordinate of king of the given colour
+     */
+    private int[] findKing(boolean isWhite){
+        if (isWhite){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] instanceof King && chessBoard[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] instanceof King && !chessBoard[i][j].isWhite()){
+                        return new int[]{i, j};
+                    }
+                }
+            }
+        }
+        return new int[] {-99, -99};
+    }
+
+    /*
+     *  Gives a list of Boards after one move of white piece
+     */
+    public List<Board> getAllValidMovesWhite() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] != null && chessBoard[i][j].isWhite()){
+                        goOverAllCells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    /*
+     *  Gives a list of Boards after one move of black piece
+     */
+    public List<Board> getAllValidMovesBlack() {
+        ArrayList<Board> result = new ArrayList<>();
+        if (!Game.isWhiteTurn())
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    if (chessBoard[i][j] != null && !chessBoard[i][j].isWhite()){
+                        goOverAllCells(result, i, j);
+                    }
+                }
+            }
+        return result;
+    }
+
+    private void goOverAllCells(ArrayList<Board> result, int i, int j) {
+        for (int k = 0; k <= 7; k++) {
+            for (int l = 0; l <= 7; l++) {
+                Board board1 = this.copy();
+                if(board1.movePiece(new int[]{i, j}, new int[]{k, l})){
+                    result.add(board1);}
+            }
+        }
+    }
+
+    public Board copy(){
+        Board board1 = new Board();
+        for (int i = 0; i <= 7; i++) {
+            System.arraycopy(chessBoard[i], 0, board1.chessBoard[i], 0, 8);
+        }
+        return board1;
     }
 
     /*
      *   Checks if the king of the given color is in check. If it is in check it will check for checkmate
      */
-    public boolean check() {
-        // TODO
+    public boolean check(boolean white) {
+        if (white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = chessBoard[i][j];
+                    if(piece!= null && !piece.isWhite() && piece.canMove(chessBoard, new int[]{i, j}, new int[]{findKing(true)[0], findKing(true)[1]})){
+                    return true;
+                    }
+                }
+            }
+        }
+        if (!white){
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    Piece piece = chessBoard[i][j];
+                    if(piece!= null && piece.isWhite() && piece.canMove(chessBoard, new int[]{i, j}, new int[]{findKing(false)[0], findKing(false)[1]})){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
-
-    /*
-     *   Checks if the king of the given color is in checkmate
-     */
-    public boolean checkmate() {
-        // TODO
-        return false;
-    }
-
 
 
     /*
@@ -151,10 +248,10 @@ public class Board {
             brdStr.append(BOARD_BACKGROUND + "  +---+---+---+---+---+---+---+---+  " + RESET_COLOR + "\n");
             brdStr.append(BOARD_BACKGROUND).append(8 - r).append(" | ");
             for (int c = 0; c < 8; c++) {
-                if (this.board[r][c] == null) {
+                if (this.chessBoard[r][c] == null) {
                     brdStr.append(".");
                 } else {
-                    brdStr.append(this.board[r][c].toString()).append(BOARD_BACKGROUND);
+                    brdStr.append(this.chessBoard[r][c].toString()).append(BOARD_BACKGROUND);
                 }
                 brdStr.append(" | ");
             }

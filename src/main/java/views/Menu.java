@@ -15,7 +15,7 @@ public class Menu extends JFrame {
     Initiates the menu class and sets the frames to be visible
     */
     public Menu() {
-        super("Utoronto Chess");//shows title in the frame
+        super("UToronto Chess");//shows title in the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//closes on exit
         MenuPanel game = new MenuPanel();//creates a new panel in the frame
         add(game);//adds panel to the frame
