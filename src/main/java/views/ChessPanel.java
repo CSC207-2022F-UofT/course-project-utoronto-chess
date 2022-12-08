@@ -21,20 +21,16 @@ public class ChessPanel extends JFrame{
         ChessPanelContent panel = new ChessPanelContent(game);//creates a new panel in the frame
         add(panel);//adds panel to the frame
         pack();
-        // setResizable(false);
         setVisible(true);
     }
 }
 
-class ChessPanelContent extends JPanel implements KeyListener, ActionListener, MouseListener {
-    private final boolean[] keys;
-    private final Timer myTimer;
-
+class ChessPanelContent extends JPanel implements MouseListener {
     Rectangle[][] grid;
-    String moveMode;
+    String moveMode = "select";
 
-    int[] start;
-    int[] end;
+    int[] start = new int[2];
+    int[] end = new int[2];
 
     Game game;
 
@@ -42,29 +38,18 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
 
     ChessBoardController controller = new ChessBoardController();
 
-//    private Image background;
-
     public ChessPanelContent(Game game) {
 
         // Assign class variables
         this.game = game;
-        moveMode = "select";
-
-        start = new int[2];
-        end = new int[2];
 
         selectRect = new Rectangle();
 
-        keys = new boolean[KeyEvent.KEY_LAST + 1];
-        myTimer = new Timer(1000, this);
-//        Font fnt = new Font("Comic Sans", Font.BOLD, 30);
-
         // Size of Panel
-        int dx = 900;
+        int dx = 500;
         int dy = 500;
 
         setPreferredSize(new Dimension(dx, dy));
-        addKeyListener(this); //key inputs
         addMouseListener(this); // mouse inputs
 
         // Create grid for chess board
@@ -80,19 +65,10 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         return new ImageIcon(name).getImage();
     }
 
-
-    // addNotify triggers when the Panel gets added to the frame.
-    // Using this avoids null-pointer exceptions.
-    // x.y() - if x is null, we get null-pointer exception
-    @Override
-    public void addNotify() {
-        super.addNotify();
-        setFocusable(true);
-        requestFocus();
-        myTimer.start();
-    }
-
-    //used to draw all aspects of the game
+    /*
+     *   Paints the chess board and the pieces on the board
+     *  @param g - the graphics object used to draw the board and pieces
+     */
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
@@ -133,6 +109,16 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
         }
     }
 
+    private void gameOverPrompt() {
+        if (controller.checkmate(game)) {
+            if (game.whiteCheckmate()) {
+                JOptionPane.showMessageDialog(null, "Black wins!");
+            } else {
+                JOptionPane.showMessageDialog(null, "White wins!");
+            }
+        }
+    }
+
     //Checks if mouse is clicked
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -153,6 +139,8 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
                     moveMode = "select";
                     start = new int[2];
                     end = new int[2];
+                    gameOverPrompt();
+
                 }
             }
         }
@@ -176,23 +164,6 @@ class ChessPanelContent extends JPanel implements KeyListener, ActionListener, M
 
     @Override
     public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        keys[e.getKeyCode()] = false;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent evt) {
     }
 
 }

@@ -3,8 +3,6 @@ package usecases.game;
 import entities.pieces.Piece;
 import usecases.board.Board;
 
-import javax.swing.*;
-
 public class Game {
 
     private static boolean whiteTurn;
@@ -71,24 +69,18 @@ public class Game {
         * Moves a piece from one position to another
      */
     public void movePiece(int[] start, int[] end) {
-        if(!over()) {
-            Board board1 = board.copy();
-            boolean success = board1.movePiece(start, end);
-            if (board1.check(whiteTurn)){
-                System.out.println("Checked");
-                success = false;
+            if (!over()) {
+                Board board1 = board.copy();
+                boolean success = board1.movePiece(start, end);
+                if (board1.check(whiteTurn)) {
+                    System.out.println("Checked");
+                    success = false;
+                }
+                if (success) {
+                    board.movePiece(start, end);
+                    whiteTurn = !whiteTurn;
+                }
             }
-            if (success) {
-                board.movePiece(start, end);
-                whiteTurn = !whiteTurn;
-            }
-        }
-        if (blackCheckmate()){
-            JOptionPane.showMessageDialog(null, "Game Over. White Wins");
-        }
-        else if (whiteCheckmate()){
-            JOptionPane.showMessageDialog(null, "Game Over. Black Wins");
-        }
     }
 
     public Piece[][] getBoard() {
